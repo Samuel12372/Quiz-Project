@@ -1,0 +1,21 @@
+.navbar{
+  display: flex;
+  padding: 10px;
+  margin: 20px;
+  justify-content: space-between;
+}
+#ManageButton{
+  width: 200px;
+  background-color: black; 
+  margin: 2px;
+}
+#CreateButton{
+  width: 200px;
+  background-color: black; 
+  margin: 2px;
+}
+#LogoutButton{
+  width: 200px;
+  background-color: black; 
+  margin: 2px;
+}
