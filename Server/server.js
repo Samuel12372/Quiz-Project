@@ -6,18 +6,18 @@
 require("dotenv").config(); 
 const express = require('express');
 const cors = require('cors');
-const { Server } = require("socket.io");
-const connectDB = require('./connection');
 
+const connectDB = require('./DB/connection');
+const quizzes = require('./Routes/Quizzes');
+const PORT = process.env.PORT;  
 const app = express();
-const http = require('http').Server(app);
-app.use(cors());
-app.use(express.json());
-
-//const PORT = process.env.PORT;  
 
 connectDB();
 
-app.listen( () => {
-    console.log(`Server is running on http://localhost:8080`);
+app.use(cors());
+app.use(express.json());
+app.use('/', quizzes); 
+
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 }); 

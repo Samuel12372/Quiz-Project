@@ -1,9 +1,13 @@
 import TrueFalse from "../components/TF";
+import MultipleChoice from "../components/MCQ";
 
 
 function Participant() {
   return (
-    <TrueFalse />
+    <>
+    <MultipleChoice />
+    {/* <TrueFalse /> */}
+    </>
   );
 }
 
