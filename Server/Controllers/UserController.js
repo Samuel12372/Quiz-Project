@@ -39,7 +39,7 @@ module.exports = {
         try {
             const { username, password } = req.body;
             console.log("📥 Received Login Data:", req.body);
-            const user = await User.findOne({ username });
+            const user = await UserModel.findOne({ username });
     
             if (!user) {
                 return res.status(400).json({ message: "❌ User not found!" });

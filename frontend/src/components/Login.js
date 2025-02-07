@@ -4,14 +4,17 @@ import axios from 'axios';
 import '../CSS/Navbar.css';
 
 
-const Login = ({ open, onClose }) => {
+const Login = ({ open, onClose, onSuccess }) => {
 
     // State to toggle between login and register form
     const [isRegister, setIsRegister] = useState(false);
     // State to set the form name
     const [formName, setFormName] = useState('Login');
+    // State to store error message
+    const [errorMessage, setErrorMessage] = useState('');
     // Form instance
     const [form] = Form.useForm();
+
     
     // Function to toggle between login and register form
     const toggleFormType = () => {
@@ -29,8 +32,8 @@ const Login = ({ open, onClose }) => {
     const handleFormSubmit = (values) => {
         if (isRegister) {
             // Handle registration logic here
-            console.log('Register:', values);
-            axios.post('http://localhost:8080/user/create', values)
+            //console.log('Register:', values);
+            axios.post('http://localhost:8080/user/register', values)
             .then((res) => {
                 console.log(res);
             })
@@ -40,13 +43,17 @@ const Login = ({ open, onClose }) => {
 
         } else {
             // Handle login logic here
-            console.log('Login:', values);
+            //console.log('Login:', values);
             axios.post('http://localhost:8080/user/login', values)
             .then((res) => {
-                console.log(res);
+                //console.log(res);
+                if (res.status === 200) {
+                    onSuccess();
+                }
             })
             .catch((error) => {
                 console.log(error);
+                setErrorMessage('Login failed. Please check your credentials and try again.');
             });
         }
     };
@@ -108,7 +115,7 @@ const Login = ({ open, onClose }) => {
                             {isRegister ? 'Already have an account? Login' : "Don't have an account? Register"}
                         </a>
                     </Form.Item>
-
+                    {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
                             {isRegister ? 'Register' : 'Login'}

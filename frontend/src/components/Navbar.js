@@ -13,7 +13,13 @@ const Navbar = () => {
     const handleLoginClick = () => {
         setIsModalopen(true); 
     };
+    
     const closeModal = () => {
+        setIsModalopen(false);
+    };
+
+    const handleLoginSuccess = () => {
+        setIsLoggedIn(true);
         setIsModalopen(false);
     };
 
@@ -28,7 +34,7 @@ const Navbar = () => {
             {!isLoggedIn ? (
                 <>
                 <Button onClick={handleLoginClick} type="primary" id="LoginButton">Login</Button>
-                <Login open={isModalopen} onClose={closeModal}/>
+                <Login open={isModalopen} onClose={closeModal} onSuccess={handleLoginSuccess}/>
                 </>
             ) : (
                 <>
