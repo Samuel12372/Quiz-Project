@@ -1,17 +1,42 @@
 import React from 'react';
+import { useState } from 'react';
 import { Button } from "antd";
-import '../CSS/Navbar.css'; // Assuming you have some CSS for styling
+import '../CSS/Navbar.css'; 
+import Login from './Login';
+
 
 const Navbar = () => {
+    
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isModalopen, setIsModalopen] = useState(false);
+
+    const handleLoginClick = () => {
+        setIsModalopen(true); 
+    };
+    const closeModal = () => {
+        setIsModalopen(false);
+    };
+
     const handleManageClick = () => {};
     const handleCreateClick = () => {};
-    const handleLogoutClick = () => {};
+    const handleLogoutClick = () => {
+        setIsLoggedIn(false);
+    };
     
     return (
         <div className="navbar">
-            <Button onClick={handleManageClick} type ="primary" id = "ManageButton">Manage Quizzes</Button>
-            <Button onClick={handleCreateClick} type ="primary" id = "CreateButton">Create Quiz</Button>
-            <Button onClick={handleLogoutClick} type ="primary" id = "LogoutButton">Logout</Button>
+            {!isLoggedIn ? (
+                <>
+                <Button onClick={handleLoginClick} type="primary" id="LoginButton">Login</Button>
+                <Login open={isModalopen} onClose={closeModal}/>
+                </>
+            ) : (
+                <>
+                    <Button onClick={handleManageClick} type="primary" id="ManageButton">Manage Quizzes</Button>
+                    <Button onClick={handleCreateClick} type="primary" id="CreateButton">Create Quiz</Button>
+                    <Button onClick={handleLogoutClick} type="primary" id="LogoutButton">Logout</Button>
+                </>
+            )}
         </div>
     );
 };
