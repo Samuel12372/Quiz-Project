@@ -1,0 +1,44 @@
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100vh;
+    width: 100vw;
+    gap: 10px; /* Optional: Adds spacing between elements */
+}
+
+.sidebar, .rightsidebar, .mainContent {
+    flex-grow: 1; /* Ensures proper width distribution */
+}
+
+.sidebar {
+    width: 20%;
+    background-color: #f4f4f4;
+    padding: 10px;
+    height: 100%;
+}
+
+.mainContent {
+    width: 60%;
+    background-color: #ffffff;
+    padding: 10px;
+    height: 100%;
+}
+
+.rightsidebar {
+    width: 20%;
+    background-color: #f4f4f4;
+    padding: 10px;
+    height: 100%;
+}
+
