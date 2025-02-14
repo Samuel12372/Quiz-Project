@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
-      {/* <Navbar />  */}
+      <Navbar /> 
       <Routes>
         <Route path="/" element = {<QuizJoiner/>} />
         <Route path="/view" element = {<Participant/>}  />

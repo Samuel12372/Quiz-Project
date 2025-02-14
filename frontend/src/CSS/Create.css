@@ -22,7 +22,9 @@ body {
 }
 
 .sidebar {
-    width: 20%;
+    max-height: 100vh; /* Adjust the height as needed */
+    overflow-y: auto;
+    width: 10%;
     background-color: #f4f4f4;
     padding: 10px;
     height: 100%;
@@ -30,15 +32,37 @@ body {
 
 .mainContent {
     width: 60%;
-    background-color: #ffffff;
-    padding: 10px;
-    height: 100%;
-}
-
-.rightsidebar {
-    width: 20%;
     background-color: #f4f4f4;
     padding: 10px;
     height: 100%;
 }
 
+.rightsidebar {
+    width: 15%;
+    background-color: #f4f4f4;
+    padding: 10px;
+    height: 100%;
+}
+
+
+#newSlideButton{
+    max-width: 200px;
+    min-width: 100px;
+    background-color: black; 
+    margin: 2px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#smallCard{
+    width: 90%;
+    height: 20vh;
+    font-size: 0.2em;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+#smallCard * {
+    font-size: 0.2em; /* Adjust the font size for all elements inside #smallCard */
+}
