@@ -33,22 +33,22 @@ function CreatePage() {
     let template;
     switch (key) {
       case "1":
-        template = ReactDOMServer.renderToString(<MCQTemplate />);
+        template = <MCQTemplate />;
         break;
       case "2":
-        template = ReactDOMServer.renderToString(<TFTemplate />);
+        template = <TFTemplate />;
         break;
       case "3":
-        template = "Picture Question Template"; // Replace with actual template
+        template = "Picture Question Template"; 
         break;
       case "4":
-        template = "Number Question Template"; // Replace with actual template
+        template = "Number Question Template"; 
         break;
       case "5":
-        template = "Letter Question Template"; // Replace with actual template
+        template = "Letter Question Template"; 
         break;
       default:
-        template = "Choose Template"; // Fallback template
+        template = "Choose Template"; 
     }
     const updatedSlides = slides.map((slide, index) => {
       if (index === currentSlide) {
@@ -78,7 +78,11 @@ function CreatePage() {
           <Button onClick={handleNewSlide} type="primary" id="newSlideButton">New Slide</Button>
           {slides.map((slide, index) => (
             <Card id="smallCard" onClick={() => handleSlideClick(index)} key={index} >
-              <div dangerouslySetInnerHTML={{ __html: slide.content }} /> 
+              {/* {typeof slide.content === "string" ? (
+                <div dangerouslySetInnerHTML={{ __html: slide.content }} />
+              ) : (
+                slide.content
+              )} */}
             </Card>
           ))}
         </div>
@@ -86,7 +90,11 @@ function CreatePage() {
       {/* Main Content */}
         <div className="mainContent">
           <Card id="mainCard">
-            <div dangerouslySetInnerHTML={{ __html: slides[currentSlide].content }} /> 
+          {typeof slides[currentSlide].content === "string" ? (
+            <div dangerouslySetInnerHTML={{ __html: slides[currentSlide].content }} />
+          ) : (
+            slides[currentSlide].content
+          )}
           </Card>
         </div>
 

@@ -117,7 +117,7 @@ const Login = ({ open, onClose, onSuccess }) => {
                     </Form.Item>
                     {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                     <Form.Item>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" id="LoginButton">
                             {isRegister ? 'Register' : 'Login'}
                         </Button>
                     </Form.Item>
