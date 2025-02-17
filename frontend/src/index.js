@@ -5,7 +5,6 @@ import './CSS/index.css';
 import Participant from './pages/Participant';
 import QuizJoiner from './components/QuizJoiner';
 import Navbar from './components/Navbar';
-import App from './App';
 import Create from './pages/Create';
 
 
@@ -17,7 +16,7 @@ root.render(
       <Routes>
         <Route path="/" element = {<QuizJoiner/>} />
         <Route path="/view" element = {<Participant/>}  />
-        <Route path="/create" element = {<Create/>} />
+        <Route path="/create/:quizId" element = {<Create/>} />
         {/* <Route path="/host" element = {} /> */}
       </Routes>
     </Router>

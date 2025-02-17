@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { Button } from "antd";
 import '../CSS/Navbar.css'; 
 import Login from './Login';
+import CreateModal from './CreateModal';
 
 
 const Navbar = () => {
     
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isModalopen, setIsModalopen] = useState(false);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     const handleLoginClick = () => {
         setIsModalopen(true); 
@@ -24,7 +26,15 @@ const Navbar = () => {
     };
 
     const handleManageClick = () => {};
-    const handleCreateClick = () => {};
+
+    const handleCreateClick = () => {
+        setIsCreateModalOpen(true);
+    };
+
+    const closeCreateModal = () => {
+        setIsCreateModalOpen(false);
+    };
+
     const handleLogoutClick = () => {
         setIsLoggedIn(false);
     };
@@ -41,6 +51,7 @@ const Navbar = () => {
                     <Button onClick={handleManageClick} type="primary" id="ManageButton">Manage Quizzes</Button>
                     <Button onClick={handleCreateClick} type="primary" id="CreateButton">Create Quiz</Button>
                     <Button onClick={handleLogoutClick} type="primary" id="LogoutButton">Logout</Button>
+                    {isCreateModalOpen && <CreateModal open={isCreateModalOpen} onClose={closeCreateModal} />}
                 </>
             )}
         </div>

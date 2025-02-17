@@ -15,4 +15,17 @@ module.exports = {
         .then(quiz => res.json(quiz))
         .catch(err => console.log(err));
     },
+
+    //Create a quiz
+    async createQuiz(req, res) {
+        const newQuiz = new QuizModel({
+            title: req.body.title,
+            description: req.body.description,
+            questions: req.body.questions
+        });
+
+        await newQuiz.save()
+        .then(quiz => res.json({ _id: quiz._id, ...quiz._doc }))
+        .catch(err => console.log(err));
+    },
 };

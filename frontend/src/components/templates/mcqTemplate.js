@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Radio, Flex, Input, Form, Button } from "antd";
+import axios from 'axios';
 import "../../CSS/Create.css";
 
 const MCQTemplate = () => {
@@ -17,6 +18,11 @@ const MCQTemplate = () => {
 
     const handleSubmit = () => {
         //axios call to save the question to the database
+        //save to quizzes collection 
+        //
+        //get quiz id
+        //get current user id 
+        //save to users Quizzes id 
     };
 
     return (

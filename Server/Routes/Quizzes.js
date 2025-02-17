@@ -7,5 +7,7 @@ const QuizController = require('../Controllers/QuizController');
 router.get('/quizzes', QuizController.getAllQuizzes);
 //Get quiz by ID
 router.get('/quiz/:id', QuizController.getQuizById);
+//Create a quiz
+router.post('/quiz/create', QuizController.createQuiz);
 
 module.exports = router;
