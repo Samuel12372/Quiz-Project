@@ -64,5 +64,10 @@ module.exports = {
             res.status(500).json({ message: "❌ Server error", error });
         }
     },
+
+    //add quizid to user
+    addQuizId: async (req, res) => {
+        
+    },
     
 };

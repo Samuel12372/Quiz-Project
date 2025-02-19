@@ -4,37 +4,47 @@ import { Button } from "antd";
 import '../CSS/Navbar.css'; 
 import Login from './Login';
 import CreateModal from './CreateModal';
+import ManageModal from './ManageModal';
 
 
 const Navbar = () => {
     
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    //state to toggle login modal
     const [isModalopen, setIsModalopen] = useState(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [isManageModalopen, setIsManageModalopen] = useState(false);
 
+    //login button click
     const handleLoginClick = () => {
         setIsModalopen(true); 
     };
-    
+    //close login modal
     const closeModal = () => {
         setIsModalopen(false);
     };
-
+    //login success
     const handleLoginSuccess = () => {
         setIsLoggedIn(true);
         setIsModalopen(false);
     };
-
-    const handleManageClick = () => {};
-
+    //manage button click
+    const handleManageClick = () => {
+        setIsManageModalopen(true);
+    };
+    //close manage modal
+    const closeManageModal = () => {
+        setIsManageModalopen(false);   
+    };
+    //create button click
     const handleCreateClick = () => {
         setIsCreateModalOpen(true);
     };
-
+    //close create modal
     const closeCreateModal = () => {
         setIsCreateModalOpen(false);
     };
-
+    //logout button click
     const handleLogoutClick = () => {
         setIsLoggedIn(false);
     };
@@ -48,10 +58,11 @@ const Navbar = () => {
                 </>
             ) : (
                 <>
-                    <Button onClick={handleManageClick} type="primary" id="ManageButton">Manage Quizzes</Button>
-                    <Button onClick={handleCreateClick} type="primary" id="CreateButton">Create Quiz</Button>
-                    <Button onClick={handleLogoutClick} type="primary" id="LogoutButton">Logout</Button>
+                    <Button onClick={handleManageClick} type="primary" id="ManageButton" className="navbar-button">Manage Quizzes</Button>
+                    <Button onClick={handleCreateClick} type="primary" id="CreateButton" className="navbar-button">Create Quiz</Button>
+                    <Button onClick={handleLogoutClick} type="primary" id="LogoutButton" className="navbar-button">Logout</Button>
                     {isCreateModalOpen && <CreateModal open={isCreateModalOpen} onClose={closeCreateModal} />}
+                    {isManageModalopen && <ManageModal open={isManageModalopen} onClose={closeManageModal}/>}
                 </>
             )}
         </div>

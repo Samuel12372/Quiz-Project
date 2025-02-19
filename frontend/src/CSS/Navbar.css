@@ -1,26 +1,34 @@
+
 .navbar{
   display: flex;
   padding: 10px;
   margin: 20px;
   justify-content: space-between;
+  position: relative;
 }
-#ManageButton{
+
+#ManageButton, #CreateButton, #LogoutButton, #LoginButton {
   width: 200px;
-  background-color: black; 
+  background-color: black;
   margin: 2px;
+  position: absolute; 
 }
-#CreateButton{
-  width: 200px;
-  background-color: black; 
-  margin: 2px;
+
+#ManageButton {
+  left: 0; 
 }
-#LogoutButton{
-  width: 200px;
-  background-color: black; 
-  margin: 2px;
+
+#CreateButton {
+  left: 50%; 
+  transform: translateX(-50%); /* Center the button */
 }
-#LoginButton{
-  width: 200px;
-  background-color: black; 
-  margin: 2px;
+
+#LogoutButton {
+  left: 100%; 
+  transform: translateX(-100%); /* Button on the right */
 }
+
+#LoginButton {
+  left: 0; 
+}
+

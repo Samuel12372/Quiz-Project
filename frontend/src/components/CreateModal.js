@@ -2,7 +2,7 @@ import { Modal, Form, Input, Button } from "antd";
 import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../CSS/Navbar.css';
+import '../CSS/Modals.css';
 
 const CreateModal = ({ open, onClose }) => {
 
@@ -14,9 +14,10 @@ const CreateModal = ({ open, onClose }) => {
         
         axios.post('http://localhost:8080/quiz/create', values)
         .then((res) => {
-            console.log(res);
+            //console.log(res);
             const quizId = res.data._id;
-            console.log(quizId);
+            //console.log(quizId);
+            axios.post('')
             navigate(`/create/${quizId}`);
         })
         .catch((error) => {
@@ -35,12 +36,7 @@ const CreateModal = ({ open, onClose }) => {
 
     return(
         <div className="createModal">
-            <Modal
-                title="Create Quiz"
-                open={open}
-                onCancel={onClose}
-                footer={null} 
-            >
+            <Modal title="Create Quiz" open={open} onCancel={onClose} footer={null} >
                 <Form
                     form={form}
                     name="create"
