@@ -28,4 +28,18 @@ module.exports = {
         .then(quiz => res.json({ _id: quiz._id, ...quiz._doc }))
         .catch(err => console.log(err));
     },
+
+    //get multiple quizzes by id
+    async getQuizzesById(req, res) {
+        try {
+            const { ids } = req.body;
+            const quizzes = await QuizModel.find({ _id: { $in: ids } });
+            res.json(quizzes);
+        } catch (error) {
+            console.error("❌ Server Error in getQuizzesById:", error);
+            res.status(500).json({ message: "❌ Server error", error });
+        }
+    },
+    
+
 };

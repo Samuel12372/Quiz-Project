@@ -10,9 +10,9 @@ const CreateModal = ({ open, onClose }) => {
     const navigate = useNavigate();
 
 
-    const handleFormSubmit = (values) => {
+    const handleFormSubmit = async (values) => {
         
-        axios.post('http://localhost:8080/quiz/create', values)
+        await axios.post('http://localhost:8080/quiz/create', values)
         .then((res) => {
             //console.log(res);
             const quizzesId = res.data._id;
@@ -35,9 +35,9 @@ const CreateModal = ({ open, onClose }) => {
         onClose();
     };
 
-    const addQuizId = (userId, quizzesId) => {
+    const addQuizId = async(userId, quizzesId) => {
        
-        axios.post(`http://localhost:8080/user/addQuizId/${userId}`, {quizzesId})
+       await axios.post(`http://localhost:8080/user/addQuizId/${userId}`, {quizzesId})
         .then((res) => {
             console.log(res);
         })

@@ -86,5 +86,23 @@ module.exports = {
             res.status(500).json({ message: "❌ Server error", error });
         }
     },
+
+    //get user quizzes
+    getQuizzes: async (req, res) => {
+        try {
+            const { userId } = req.params;
+            // console.log("📥 Received User ID:", req.params);
+    
+            const user = await UserModel.findById(userId);
+            if (!user) {
+                return res.status(404).json({ message: "❌ User not found!" });
+            }
+    
+            res.json({ quizzesId: user.quizzesId });
+        } catch (error) {
+            console.error("❌ Server Error in getQuizzes:", error);
+            res.status(500).json({ message: "❌ Server error", error });
+        }
+    }
     
 };
