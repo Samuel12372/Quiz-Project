@@ -1,4 +1,4 @@
-import { Modal, List} from 'antd';
+import { Modal, List, Button} from 'antd';
 import { useState, useEffect} from 'react';
 import axios from 'axios';
 
@@ -31,6 +31,21 @@ const ManageModal = ({open, onClose}) => {
         });
     };
 
+    const handleEdit = (quizId) => {
+        // Handle edit logic here
+        console.log(`Edit quiz with id: ${quizId}`);
+    };
+
+    const handleDelete = (quizId) => {
+        // Handle delete logic here
+        console.log(`Delete quiz with id: ${quizId}`);
+    };
+
+    const handleHost = (quizId) => {
+        // Handle host logic here
+        console.log(`Host quiz with id: ${quizId}`);
+    };
+
     return (
         <div className="manageModal">
             <Modal open={open} onCancel={onClose} footer={null}>
@@ -38,12 +53,18 @@ const ManageModal = ({open, onClose}) => {
                     itemLayout="horizontal"
                     dataSource={quizzes}
                     renderItem={quiz => (
-                        <List.Item>
+                        <List.Item
+                            actions={[
+                                <Button onClick={() => handleEdit(quiz._id)}>Edit</Button>,
+                                <Button onClick={() => handleDelete(quiz._id)}>Delete</Button>,
+                                <Button onClick={() => handleHost(quiz._id)}>Host</Button>
+                            ]}
+                        >
                             <List.Item.Meta
                                 title={quiz.title}
                                 description={quiz.description}
-                                
                             />
+
                         </List.Item>
                     )}
                 />
