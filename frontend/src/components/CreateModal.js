@@ -15,10 +15,16 @@ const CreateModal = ({ open, onClose }) => {
         axios.post('http://localhost:8080/quiz/create', values)
         .then((res) => {
             //console.log(res);
-            const quizId = res.data._id;
-            //console.log(quizId);
-            axios.post('')
-            navigate(`/create/${quizId}`);
+            const quizzesId = res.data._id;
+            const userId = localStorage.getItem('userId'); 
+            console.log(userId);
+            
+            if (userId) {
+                addQuizId(userId, quizzesId);
+                navigate(`/create/${quizzesId}`);
+            } else {
+                console.error('User ID is not defined');
+            }
         })
         .catch((error) => {
             console.log(error);
@@ -28,6 +34,17 @@ const CreateModal = ({ open, onClose }) => {
         form.resetFields();
         onClose();
     };
+
+    const addQuizId = (userId, quizzesId) => {
+       
+        axios.post(`http://localhost:8080/user/addQuizId/${userId}`, {quizzesId})
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
     
     const handleCancel = () => {
         form.resetFields();

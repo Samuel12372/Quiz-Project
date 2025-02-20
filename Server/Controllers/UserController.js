@@ -57,7 +57,7 @@ module.exports = {
             );
     
     
-            res.json({ message: "✅ Login successful!", token, username: user.username, role: user.role });
+            res.status(200).json({ userId: user._id, token });
     
         } catch (error) {
             console.error("❌ Server Error in loginUser:", error);
@@ -67,7 +67,24 @@ module.exports = {
 
     //add quizid to user
     addQuizId: async (req, res) => {
-        
+        try {
+            const { userId } = req.params;
+            const { quizzesId } = req.body;
+            console.log("📥 Received Quiz ID:", req.body);
+    
+            const user = await UserModel.findById(userId);
+            if (!user) {
+                return res.status(404).json({ message: "❌ User not found!" });
+            }
+    
+            user.quizzesId.push(quizzesId);
+            await user.save();
+    
+            res.json({ message: "✅ Quiz ID added to user!", user });
+        } catch (error) {
+            console.error("❌ Server Error in addQuizId:", error);
+            res.status(500).json({ message: "❌ Server error", error });
+        }
     },
     
 };

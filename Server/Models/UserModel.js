@@ -30,7 +30,7 @@ const userSchema = new Schema(
     },
     quizzesId: [
       {
-        type: String,
+        type: Object,
         required: false,
       },
     ],

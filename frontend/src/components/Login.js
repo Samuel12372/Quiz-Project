@@ -31,8 +31,6 @@ const Login = ({ open, onClose, onSuccess }) => {
     // Function to handle form submission
     const handleFormSubmit = (values) => {
         if (isRegister) {
-            // Handle registration logic here
-            //console.log('Register:', values);
             axios.post('http://localhost:8080/user/register', values)
             .then((res) => {
                 console.log(res);
@@ -42,12 +40,12 @@ const Login = ({ open, onClose, onSuccess }) => {
             });
 
         } else {
-            // Handle login logic here
-            //console.log('Login:', values);
             axios.post('http://localhost:8080/user/login', values)
             .then((res) => {
                 //console.log(res);
                 if (res.status === 200) {
+                    console.log(res.data.userId);
+                    localStorage.setItem('userId', res.data.userId);
                     onSuccess();
                 }
             })
