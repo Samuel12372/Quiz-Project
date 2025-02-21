@@ -12,11 +12,11 @@ const quizSchema = new mongoose.Schema(
         },
         questions: [
         {
-            questionType: {
+            questionText: {
                 type: String,
                 required: false
             },
-            questionText: {
+            questionType: {
                 type: String,
                 required: false
             },

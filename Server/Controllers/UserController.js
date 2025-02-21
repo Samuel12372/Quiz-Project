@@ -103,6 +103,28 @@ module.exports = {
             console.error("❌ Server Error in getQuizzes:", error);
             res.status(500).json({ message: "❌ Server error", error });
         }
-    }
+    },
+
+    //remove quiz id from user
+    removeQuizId: async (req, res) => {
+        try {
+            const { userId } = req.params;
+            const { quizId } = req.body;
+            console.log("📥 Received Quiz ID:", req.body);
+    
+            const user = await UserModel.findById(userId);
+            if (!user) {
+                return res.status(404).json({ message: "❌ User not found!" });
+            }
+    
+            user.quizzesId = user.quizzesId.filter(id => id !== quizId);
+            await user.save();
+    
+            res.json({ message: "✅ Quiz ID removed from user!", user });
+        } catch (error) {
+            console.error("❌ Server Error in removeQuizId:", error);
+            res.status(500).json({ message: "❌ Server error", error });
+        }
+    },
     
 };

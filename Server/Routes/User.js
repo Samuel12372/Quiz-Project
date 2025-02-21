@@ -11,6 +11,8 @@ router.post('/user/login', UserController.loginUser);
 router.post('/user/addQuizId/:userId', UserController.addQuizId);
 //get user quizzes
 router.post('/user/getQuizzes/:userId', UserController.getQuizzes);
+//remove quiz id from user
+router.post('/user/removeQuizId/:userId', UserController.removeQuizId);
 
 
 module.exports = router;

@@ -40,6 +40,13 @@ module.exports = {
             res.status(500).json({ message: "❌ Server error", error });
         }
     },
+
+    //delete a quiz 
+    async deleteQuiz(req, res) {
+        await QuizModel.findByIdAndDelete(req.params.id)
+        .then(() => res.json({ message: 'Quiz deleted successfully' }))
+        .catch(err => console.log(err));
+    },
     
 
 };
