@@ -16,7 +16,7 @@ const MCQTemplate = () => {
         form.resetFields();
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         //axios call to save the question to the database
         //save to quizzes collection 
         //

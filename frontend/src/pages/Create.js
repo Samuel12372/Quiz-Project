@@ -12,6 +12,7 @@ function CreatePage() {
 
   const [slides, setSlides] = useState([{ content: "Choose Template" }]);
   const[currentSlide, setCurrenSlide] = useState(0)
+  const [selectedQuestionType, setSelectedQuestionType] = useState("Question Type");
 
   //new slide button click to add a slide
   const handleNewSlide = () => {
@@ -31,25 +32,33 @@ function CreatePage() {
   //menu click to change the template
   const handleMenuClick = ({ key }) => {
     let template;
+    let questionType;
     switch (key) {
       case "1":
         template = <MCQTemplate />;
+        questionType = "Multiple Choice";
         break;
       case "2":
         template = <TFTemplate />;
+        questionType = "True/False";
         break;
       case "3":
-        template = "Picture Question Template"; 
+        template = "Picture Question Template";
+        questionType = "Picture Question";
         break;
       case "4":
-        template = "Number Question Template"; 
+        template = "Number Question Template";
+        questionType = "Number Questions";
         break;
       case "5":
-        template = "Letter Question Template"; 
+        template = "Letter Question Template";
+        questionType = "Letter Question";
         break;
       default:
-        template = "Choose Template"; 
+        template = "Choose Template";
+        questionType = "Question Type";
     }
+    setSelectedQuestionType(questionType);
     const updatedSlides = slides.map((slide, index) => {
       if (index === currentSlide) {
         return { ...slide, content: template };
@@ -104,7 +113,7 @@ function CreatePage() {
         <Dropdown overlay={menu}>
           <Button>
             <Space>
-              Question Type
+              {selectedQuestionType}
               <DownOutlined />
             </Space>
           </Button>
