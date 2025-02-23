@@ -1,9 +1,17 @@
+import React, { useEffect } from 'react';
 
 
-const TFTemplate = () => {
+const TFTemplate = ({question}) => {
+
+    useEffect(() => {
+        if(question){
+            console.log(question);
+        }
+    }, [question]);
+
     return (
         <div>
-            
+            <h1>{question.questionText}</h1>
         </div>
     );
 };
