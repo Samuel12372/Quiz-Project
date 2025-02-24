@@ -13,5 +13,7 @@ router.post('/quizzes/multiple', QuizController.getQuizzesById);
 router.post('/quiz/create', QuizController.createQuiz);
 //delete a quiz
 router.delete('/quiz/delete/:id', QuizController.deleteQuiz);
+//save a question
+router.post('/:quizId/question', QuizController.createQuestion);
 
 module.exports = router;

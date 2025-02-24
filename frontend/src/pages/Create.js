@@ -13,10 +13,11 @@ function CreatePage() {
 
   const { quizId } = useParams();
   const [slides, setSlides] = useState([{ content: "Choose Template" }]);
-  const[currentSlide, setCurrenSlide] = useState(0)
+  const[currentSlide, setCurrentSlide] = useState(0)
   const [selectedQuestionType, setSelectedQuestionType] = useState("Question Type");
   const [quiz, setQuiz] = useState({});
   const [questions, setQuestions] = useState([]);
+  const [questionSaved, setQuestionSaved] = useState(false);
 
   useEffect(() => {
     
@@ -41,7 +42,7 @@ function CreatePage() {
     };
 
     fetchQuiz();
-  }, [quizId,]);
+  }, [quizId, questionSaved]);
 
   //new slide button click to add a slide
   const handleNewSlide = () => {
@@ -50,52 +51,46 @@ function CreatePage() {
       content: { questionText: "New slide content", questionType: "Question Type" },
     };
     setSlides([...slides, newSlide]);
-    setQuestions([...questions, {}]);
+    setQuestions([...questions, { questionText: "", questionType: "Question Type" }])
   };
 
   //sidebar slide click to change the current slide
   const handleSlideClick = (index) => {
-    setCurrenSlide(index)
+    setCurrentSlide(index)
+
   };
 
       
   //menu click to change the template
   const handleMenuClick = ({ key }) => {
-    let template;
     let questionType;
     switch (key) {
       case "1":
-        template = <MCQTemplate />;
-        questionType = "MQC";
+        questionType = "MCQ";
         break;
       case "2":
-        template = <TFTemplate />;
         questionType = "T/F";
         break;
       case "3":
-        template = "Picture Question Template";
         questionType = "Picture Question";
         break;
       case "4":
-        template = "Number Question Template";
         questionType = "Number Questions";
         break;
       case "5":
-        template = "Letter Question Template";
         questionType = "Letter Question";
         break;
       default:
-        template = "Choose Template";
         questionType = "Question Type";
     }
     setSelectedQuestionType(questionType);
-    const updatedSlides = slides.map((slide, index) => {
-      if (index === currentSlide) {
-        return { ...slide, content: {...slide.content, questionType} };
-      }
-      return slide;
-    });
-    setSlides(updatedSlides);
+  
+    const updatedQuestions = [...questions];
+    updatedQuestions[currentSlide] = {
+      ...updatedQuestions[currentSlide],
+      questionType,
+    };
+    setQuestions(updatedQuestions);
   };
 
   //menu for question type
@@ -108,14 +103,14 @@ function CreatePage() {
       <Menu.Item key="5">Letter Question</Menu.Item>
     </Menu>
   );
-
+  
   const renderQuestion = () => {
     const question = questions[currentSlide];
-    if (!question) return <div>Unknown Question Type</div>;
-
+    if (!question) return <div>Choose Question Type</div>;
+  
     switch (question.questionType) {
       case "MCQ":
-        return <MCQTemplate question={question} />;
+        return <MCQTemplate question={question} onQuestionSaved={() => setQuestionSaved(prev => !prev)} />;
       case "T/F":
         return <TFTemplate question={question} />;
       case "Picture Question":
@@ -125,10 +120,8 @@ function CreatePage() {
       case "Letter Question":
         return <div>Letter Question Template</div>;
       default:
-        return <div>Unknown Question Type</div>;
+        return <div>Choose a Template</div>;
     }
-
-    
   };
 
 
@@ -152,7 +145,7 @@ function CreatePage() {
         <div className="mainContent">
         <Card id="mainCard">
           
-              <h1>{renderQuestion()}</h1>
+          {renderQuestion()}
           
         </Card>
         </div>
@@ -163,7 +156,8 @@ function CreatePage() {
         <Dropdown overlay={menu}>
           <Button >
             <Space>
-              {selectedQuestionType}
+              {/* {selectedQuestionType} */}
+              Question Type
               <DownOutlined />
             </Space>
           </Button>

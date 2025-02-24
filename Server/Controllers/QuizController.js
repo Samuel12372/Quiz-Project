@@ -47,6 +47,20 @@ module.exports = {
         .then(() => res.json({ message: 'Quiz deleted successfully' }))
         .catch(err => console.log(err));
     },
+
+    //save a question
+    async createQuestion(req, res) {
+        const newQuestion = {
+            questionText: req.body.questionText,
+            options: req.body.options,
+            correctAnswer: req.body.correctAnswer,
+            questionType: req.body.questionType
+        };
+
+        await QuizModel.findByIdAndUpdate(req.params.quizId, { $push: { questions: newQuestion } }, { new: true })
+        .then(quiz => {res.json(quiz)})
+        .catch(err => console.log(err));
+    }
     
 
 };
