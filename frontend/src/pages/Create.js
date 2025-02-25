@@ -57,7 +57,13 @@ function CreatePage() {
   //sidebar slide click to change the current slide
   const handleSlideClick = (index) => {
     setCurrentSlide(index)
+  };
 
+  const handleQuestionDeleted = () => {
+    const updatedQuestions = questions.filter((_, index) => index !== currentSlide);
+    setQuestions(updatedQuestions);
+    setSlides(updatedQuestions.map((question) => ({ content: question })));
+    setCurrentSlide(0);
   };
 
       
@@ -110,7 +116,11 @@ function CreatePage() {
   
     switch (question.questionType) {
       case "MCQ":
-        return <MCQTemplate question={question} onQuestionSaved={() => setQuestionSaved(prev => !prev)} />;
+        return <MCQTemplate 
+                  question={question} 
+                  onQuestionSaved={() => setQuestionSaved(prev => !prev)}
+                  onQuestionDeleted={handleQuestionDeleted} 
+                />;
       case "T/F":
         return <TFTemplate question={question} />;
       case "Picture Question":

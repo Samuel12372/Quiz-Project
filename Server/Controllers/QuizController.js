@@ -50,6 +50,8 @@ module.exports = {
 
     //save a question
     async createQuestion(req, res) {
+        
+
         const newQuestion = {
             questionText: req.body.questionText,
             options: req.body.options,
@@ -59,6 +61,13 @@ module.exports = {
 
         await QuizModel.findByIdAndUpdate(req.params.quizId, { $push: { questions: newQuestion } }, { new: true })
         .then(quiz => {res.json(quiz)})
+        .catch(err => console.log(err));
+    },
+
+    //delete a question
+    async deleteQuestion(req, res) {
+        await QuizModel.findByIdAndUpdate(req.params.quizId, { $pull: { questions: { _id: req.params.questionId } } }, { new: true })
+        .then(quiz => res.json(quiz))
         .catch(err => console.log(err));
     }
     
