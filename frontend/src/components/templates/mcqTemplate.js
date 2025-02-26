@@ -1,5 +1,5 @@
 import { useState, useEffect  } from "react";
-import { Radio, Flex, Input, Form, Button } from "antd";
+import { Radio, Flex, Input, Form, Button, Space} from "antd";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import "../../CSS/Create.css";
@@ -30,19 +30,19 @@ const MCQTemplate = ({question, onQuestionSaved, onQuestionDeleted}) => {
     
     const options = [
         {
-          label: `${question.options?.[0] || "Option A"}`,
+          label:  "Option A",
           value: 'a',
         },
         {
-          label: `${question.options?.[1] || "Option B"}`,
+          label:  "Option B",
           value: 'b',
         },
         {
-          label: `${question.options?.[2] || "Option C"}`,
+          label:  "Option C",
           value: 'c',
         },
         {
-          label: `${question.options?.[3] || "Option D"}`,
+          label: "Option D",
           value: 'd',
         },
       ];
@@ -92,32 +92,56 @@ const MCQTemplate = ({question, onQuestionSaved, onQuestionDeleted}) => {
         <div className="multipleChoiceTemplate">
             <Form id="mcqForm" form={form}>
                 <div className="questionContainer">
-                    <Form.Item name="question" rules={[{ required: true, message: "Please enter the question" }]}>
-                        <Input placeholder="Type Question Here" />
+                    <Form.Item label="Question:" name="question" rules={[{ required: true, message: "Please enter the question" }]}>
+                        <Space.Compact>
+                            <Form.Item name="question" noStyle> 
+                                <Input placeholder="Type Question Here" />
+                            </Form.Item>
+                            <Button type="primary">Upload Image</Button>
+                        </Space.Compact>
                     </Form.Item>
                 </div>
                 <div className="optionContainer">
-                    <Form.Item name="a" rules={[{ required: true, message: "At least 3 options required" }]}>
-                        <Input placeholder="Option A" />
+                    <Form.Item label="Option A:" name="a" rules={[{ required: true, message: "At least 3 options required" }]}>
+                        <Space.Compact>
+                            <Form.Item name="a" noStyle> 
+                                <Input placeholder="Option A" />
+                            </Form.Item>
+                            <Button type="primary">Upload Image</Button>
+                        </Space.Compact>
                     </Form.Item>
                 </div>
                 <div className="optionContainer">
-                    <Form.Item name="b" rules={[{ required: true, message: "At least 3 options required" }]}>
-                        <Input placeholder="Option B" />
+                    <Form.Item label="Option B:" name="b" rules={[{ required: true, message: "At least 3 options required" }]}>
+                        <Space.Compact>
+                            <Form.Item name="b" noStyle> 
+                                <Input placeholder="Option B" />
+                            </Form.Item>
+                            <Button type="primary">Upload Image</Button>
+                        </Space.Compact>
                     </Form.Item>
                 </div>
                 <div className="optionContainer">
-                    <Form.Item name="c" rules={[{ required: true, message: "At least 3 options required" }]}>
-                        <Input placeholder="Option C" />
+                    <Form.Item label="Option C:" name="c" rules={[{ required: true, message: "At least 3 options required" }]}>
+                        <Space.Compact>
+                            <Form.Item name="c" noStyle> 
+                                <Input placeholder="Option C" />
+                            </Form.Item>
+                            <Button type="primary">Upload Image</Button>
+                        </Space.Compact>
                     </Form.Item>
                 </div>
                 <div className="optionContainer">
-                    <Form.Item name="d" >
-                        <Input placeholder="Option D" />
+                    <Form.Item label="Option D:" name="d" rules={[{ required: true, message: "At least 3 options required" }]} >
+                        <Space.Compact>
+                            <Form.Item name="d" noStyle> 
+                                <Input placeholder="Option D" />
+                            </Form.Item>
+                            <Button type="primary">Upload Image</Button>
+                        </Space.Compact>
                     </Form.Item>
                 </div>
 
-                {/* Correct Answer Selection */}
                  {/* Correct Answer Selection */}
                  <Form.Item>
                     <Flex vertical gap="middle">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "antd";
 import '../CSS/Navbar.css'; 
 import Login from './Login';
@@ -14,6 +14,13 @@ const Navbar = () => {
     const [isModalopen, setIsModalopen] = useState(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isManageModalopen, setIsManageModalopen] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsLoggedIn(true);
+        }
+    }, []);
 
     //login button click
     const handleLoginClick = () => {
@@ -47,6 +54,8 @@ const Navbar = () => {
     //logout button click
     const handleLogoutClick = () => {
         setIsLoggedIn(false);
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
     };
     
     return (

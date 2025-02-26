@@ -60,10 +60,10 @@ function CreatePage() {
   };
 
   const handleQuestionDeleted = () => {
+    setCurrentSlide(currentSlide - 1);
     const updatedQuestions = questions.filter((_, index) => index !== currentSlide);
     setQuestions(updatedQuestions);
     setSlides(updatedQuestions.map((question) => ({ content: question })));
-    setCurrentSlide(0);
   };
 
       

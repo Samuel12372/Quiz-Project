@@ -46,6 +46,7 @@ const Login = ({ open, onClose, onSuccess }) => {
                 if (res.status === 200) {
                     console.log(res.data.userId);
                     localStorage.setItem('userId', res.data.userId);
+                    localStorage.setItem('token', res.data.token); // Store the token
                     onSuccess();
                 }
             })
