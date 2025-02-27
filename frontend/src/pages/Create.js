@@ -122,7 +122,11 @@ function CreatePage() {
                   onQuestionDeleted={handleQuestionDeleted} 
                 />;
       case "T/F":
-        return <TFTemplate question={question} />;
+        return <TFTemplate 
+                  question={question} 
+                  onQuestionSaved={() => setQuestionSaved(prev => !prev)}
+                  onQuestionDeleted={handleQuestionDeleted} 
+                />;
       case "Picture Question":
         return <div>Picture Question Template</div>;
       case "Number Questions":

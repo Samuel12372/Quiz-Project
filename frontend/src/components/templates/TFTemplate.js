@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Radio, Input, Button, Flex } from 'antd';
+import { Form, Radio, Input, Button, Flex, Space } from 'antd';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import '../../CSS/Create.css';
 
 
-const TFTemplate = ({question, }) => {
+const TFTemplate = ({question, onQuestionDeleted, onQuestionSaved }) => {
 
     const [form] = Form.useForm();
-    const [value, setValue] = useState(1);
+    const [value, setValue] = useState('true');
     const { quizId } = useParams();
 
     useEffect(() => {
         if(question){
-            console.log(question);
+            //console.log(question);
             form.setFieldsValue({
                 question: question.questionText,
                 correctAnswer: question.correctAnswer
             });
+          setValue(question.correctAnswer);
         }
     }, [question, form]);
 
@@ -34,15 +35,43 @@ const TFTemplate = ({question, }) => {
         form.resetFields();
     };
 
-    const handleSubmit = async() => {};
-    const handleDelete = async() => {};
+    const handleSubmit = async() => {
+        try {
+            const values = await form.validateFields();
+            const questionData = {
+                questionText: values.question,
+                correctAnswer: value,
+                questionType: "T/F"
+            };
+            await axios.post(`http://localhost:8080/${quizId}/question`, questionData);
+            //console.log("Question saved:", questionData);
+            onQuestionSaved();
+        } catch (error) {
+            console.error("Error saving question:", error);
+        }
+    };
+
+    const handleDelete = async() => {
+        try {
+            await axios.delete(`http://localhost:8080/${quizId}/question/${question._id}`);
+            //console.log("Question deleted:", question.id);
+            onQuestionDeleted();
+        } catch (error) {
+            console.error("Error deleting question:", error);
+        }
+    };
 
     return (
         <div className="TrueFalseContainer">
             <Form id="mcqForm" form={form}>
                 <div className="questionContainer">
-                    <Form.Item name="question" rules={[{ required: true, message: "Please enter the question" }]}>
-                        <Input placeholder="Type Question Here" />
+                <Form.Item label="Question:" name="question" rules={[{ required: true, message: "Please enter the question" }]}>
+                        <Space.Compact>
+                            <Form.Item name="question" noStyle> 
+                                <Input placeholder="Type Question Here" />
+                            </Form.Item>
+                            <Button type="primary">Upload Image</Button>
+                        </Space.Compact>
                     </Form.Item>
                 </div>
                 
