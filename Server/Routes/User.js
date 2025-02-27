@@ -13,6 +13,8 @@ router.post('/user/addQuizId/:userId', UserController.addQuizId);
 router.post('/user/getQuizzes/:userId', UserController.getQuizzes);
 //remove quiz id from user
 router.post('/user/removeQuizId/:userId', UserController.removeQuizId);
+//get all user points
+router.get('/user/getAllPoints', UserController.getAllPoints);
 
 
 module.exports = router;

@@ -69,7 +69,9 @@ module.exports = {
         await QuizModel.findByIdAndUpdate(req.params.quizId, { $pull: { questions: { _id: req.params.questionId } } }, { new: true })
         .then(quiz => res.json(quiz))
         .catch(err => console.log(err));
-    }
+    },
+
+    
     
 
 };

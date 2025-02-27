@@ -126,5 +126,18 @@ module.exports = {
             res.status(500).json({ message: "❌ Server error", error });
         }
     },
+
+    //get all user points
+    getAllPoints: async (req, res) => {
+        try {
+            const users = await UserModel.find();
+            const userPoints = users.map(user => ({ username: user.username, points: user.points }));
+            res.json(userPoints);
+        } catch (error) {
+            console.error("❌ Server Error in getAllUserPoints:", error);
+            res.status(500).json({ message: "❌ Server error", error });
+        }
+        
+    },
     
 };
