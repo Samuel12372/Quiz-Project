@@ -35,30 +35,36 @@
 
 /* title css */
 
-@import url('https://fonts.googleapis.com/css2?family=Wendy+One&display=swap');
 
-body {
-  font-family: 'Wendy One', sans-serif;
-  background: #63adf2; /* change this */
-}
 
-.title {
+.code {
   position: absolute;
   top: 50%;
-  left:50%;
+  left:25%;
   transform: translate(-50%,-50%);
 }
+.clash{
+  position: absolute;
+  top: 50%;
+  left:78%;
+  transform: translate(-50%,-50%);
+}
+
 h3 {
   font-size:12vw;
   white-space: nowrap;
   overflow: hidden;
   line-height: 220px;
-  color: #000000; /* change this */
-  text-shadow: 0 10px 7px rgba(0,0,0,0.4),0 -10px 1px #fff;
+  color: #55C1FF; /* change this */
+  text-shadow: 0 10px 7px rgba(0,0,0,0.4),0 -10px 1px #3f83c0;
   letter-spacing: -3px;
 }
 
-h3:hover {
+.glitch-container {
+  height: 100px;
+}
+
+.glitch-container:hover h3 {
   animation: glitch .3s linear infinite;
   cursor: pointer;
 }
