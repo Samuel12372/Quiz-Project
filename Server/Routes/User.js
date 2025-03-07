@@ -15,6 +15,8 @@ router.post('/user/getQuizzes/:userId', UserController.getQuizzes);
 router.post('/user/removeQuizId/:userId', UserController.removeQuizId);
 //get all user points
 router.get('/user/getAllPoints', UserController.getAllPoints);
+//check if user is host
+router.post('/user/host', UserController.checkHost);
 
 
 module.exports = router;

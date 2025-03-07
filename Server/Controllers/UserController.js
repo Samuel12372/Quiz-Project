@@ -139,5 +139,24 @@ module.exports = {
         }
         
     },
+
+    //check if user is host
+    checkHost: async (req, res) => {
+        try {
+            const { userId, quizId } = req.body;
+            //console.log("📥 Received User ID:", req.body);
+    
+            const user = await UserModel.findById(userId);
+            if (!user) {
+                return res.status(404).json({ message: "❌ User not found!" });
+            }
+            const isHost = user.quizzesId.includes(quizId);
+            res.json({ isHost });
+           
+        } catch (error) {
+            console.error("❌ Server Error in checkHost:", error);
+            res.status(500).json({ message: "❌ Server error", error });
+        }
+    }
     
 };

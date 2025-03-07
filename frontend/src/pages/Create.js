@@ -19,8 +19,7 @@ function CreatePage() {
   const [questions, setQuestions] = useState([]);
   const [questionSaved, setQuestionSaved] = useState(false);
 
-  useEffect(() => {
-    
+  useEffect(() => {   
     const fetchQuiz = async () => {
       await axios.get(`http://localhost:8080/quiz/${quizId}`)
       .then((res) => {
