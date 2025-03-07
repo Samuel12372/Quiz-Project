@@ -39,14 +39,8 @@
 
 .code {
   position: absolute;
-  top: 50%;
-  left:25%;
-  transform: translate(-50%,-50%);
-}
-.clash{
-  position: absolute;
-  top: 50%;
-  left:78%;
+  top: 30%;
+  left:50%;
   transform: translate(-50%,-50%);
 }
 
@@ -55,16 +49,13 @@ h3 {
   white-space: nowrap;
   overflow: hidden;
   line-height: 220px;
-  color: #55C1FF; /* change this */
-  text-shadow: 0 10px 7px rgba(0,0,0,0.4),0 -10px 1px #3f83c0;
+  color: #241d1d; /* change this */
+  /* text-shadow: 0 10px 7px rgba(0,0,0,0.4),0 -10px 1px #ffffff; */
   letter-spacing: -3px;
 }
 
-.glitch-container {
-  height: 100px;
-}
 
-.glitch-container:hover h3 {
+h3:hover {
   animation: glitch .3s linear infinite;
   cursor: pointer;
 }
