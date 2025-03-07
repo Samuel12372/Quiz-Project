@@ -12,6 +12,7 @@
   background-color: black;
   margin: 2px;
   position: absolute; 
+  z-index: 2;
 }
 
 #ManageButton {
@@ -42,6 +43,7 @@
   top: 30%;
   left:50%;
   transform: translate(-50%,-50%);
+  z-index: 0;
 }
 
 h3 {

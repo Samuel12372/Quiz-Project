@@ -71,6 +71,18 @@ module.exports = {
         .catch(err => console.log(err));
     },
 
+    //host a quiz
+    async hostQuiz(req, res) {
+        const { userId, quizId, quizCode } = req.body;
+        try {
+            await QuizModel.updateOne({ _id: quizId }, { $set: { quizCode, isLive: true } });
+
+            res.json({ success: true, message: "Quiz is now live!", quizCode, });
+        } catch (error) {
+            res.status(500).json({ error: "Failed to host quiz" });
+        }
+    },
+
     
     
 

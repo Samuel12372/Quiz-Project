@@ -10,6 +10,15 @@ const quizSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        isLive: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+        quizCode: {
+            type: String,
+            required: false
+        },
         questions: [
         {
             questionText: {

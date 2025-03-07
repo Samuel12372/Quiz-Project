@@ -15,7 +15,7 @@ const ManageModal = ({open, onClose}) => {
         //console.log(userId);
         axios.post(`http://localhost:8080/user/getQuizzes/${userId}`)
         .then((res) => {
-            console.log(res.data.quizzesId);
+            //console.log(res.data.quizzesId);
             //setQuizzes(res.data.quizzesId);
             getQuizzes(res.data.quizzesId)
         })
@@ -28,7 +28,7 @@ const ManageModal = ({open, onClose}) => {
     const getQuizzes = async (ids) => {
         await axios.post(`http://localhost:8080/quizzes/multiple`, {ids})
         .then((res) => {
-            console.log(res.data);
+            //console.log(res.data);
             setQuizzes(res.data);
         })
         .catch((error) => {
@@ -68,9 +68,29 @@ const ManageModal = ({open, onClose}) => {
     };
 
     //handle host quiz button
-    const handleHost = (quizId) => {
-        // Handle host logic here
-        console.log(`Host quiz with id: ${quizId}`);
+    const handleHost = async (quizId) => {
+        
+        const userId = localStorage.getItem('userId'); // Get the host's user ID
+
+        // Generate a unique quiz code
+        const quizCode = Math.random().toString(36).substring(2, 8).toUpperCase(); 
+        console.log(quizCode + quizId);
+        // Store hosted quiz data in the backend
+        await axios.post(`http://localhost:8080/quiz/host`, {
+            userId,
+            quizId,
+            quizCode
+        }).then((res) => {
+            console.log(res);
+            navigate(`/view/${quizId}`, { state: { quizCode } });
+            onClose();
+        }).catch((error) => {
+            console.log(error);
+        });
+
+        // Redirect the host to the live quiz page
+
+        
     };
 
     return (

@@ -17,5 +17,7 @@ router.delete('/quiz/delete/:id', QuizController.deleteQuiz);
 router.post('/:quizId/question', QuizController.createQuestion);
 //delete a question
 router.delete('/:quizId/question/:questionId', QuizController.deleteQuestion);
+//host a quiz
+router.post('/quiz/host', QuizController.hostQuiz);
 
 module.exports = router;
