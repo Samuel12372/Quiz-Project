@@ -1,7 +1,25 @@
-import React from "react";
-import { Button } from 'antd';
+import React, { useState } from "react";
+import { Button, Modal, Input } from 'antd';
 
 function PlayerView({ quiz, isStarted, handleLeaveClick }) {
+
+  const [isModalVisible, setIsModalVisible] = useState(!quiz.playerName);
+  const [playerName, setPlayerName] = useState(quiz.playerName || `player${Math.floor(Math.random() * 1000)}`);
+
+
+  const handleOk = () => {
+    if (playerName.trim()) {
+      setIsModalVisible(false);
+      // Update the player name in the quiz object or handle it as needed
+      quiz.playerName = playerName;
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+
   return (
     <div>
       <h1>{quiz.title}</h1>
@@ -17,6 +35,18 @@ function PlayerView({ quiz, isStarted, handleLeaveClick }) {
           {/* Add participant-specific content here */}
         </div>
       )}
+      <Modal
+        title="Enter Your Name"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Input
+          placeholder="Enter your name"
+          value={playerName}
+          onChange={(e) => setPlayerName(e.target.value)}
+        />
+      </Modal>
     </div>
   );
 }

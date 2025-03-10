@@ -2,10 +2,13 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import{ Button, QRCode} from 'antd';
+import { io } from "socket.io-client";
+
 import HostView from "../components/quizView/HostView";
 import PlayerView from "../components/quizView/PlayerView";
 import "../CSS/Participant.css";
 
+//const socket = io("http://localhost:8080");
 
 function Participant() {
   const { quizId } = useParams();
@@ -13,11 +16,14 @@ function Participant() {
   const [questions, setQuestions] = useState([]);
   const [isHost, setIsHost] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
-
+  const [players, setPlayers] = useState([]);
+  const [scores, setScores] = useState({});
+ 
+  
   useEffect(() => {
     fetchData();
     checkHost();
-
+  
   }, [quizId]);
   
   const fetchData = async () => {
@@ -57,8 +63,9 @@ function Participant() {
   const quizJoinLink = `http://localhost:3000/join/${quizId}`; 
 
   return (
-    <div>
+    <div className="participant">
       {isHost ? (
+        <>
         <HostView
           quiz={quiz}
           questions={questions}
@@ -66,6 +73,8 @@ function Participant() {
           setIsStarted={setIsStarted}
           handleEndClick={handleEndClick}
         />
+          
+        </>
       ) : (
         <PlayerView
           quiz={quiz}

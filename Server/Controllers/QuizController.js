@@ -83,6 +83,21 @@ module.exports = {
         }
     },
 
+    //join a quiz
+    async joinQuiz(req, res) {
+        const { code, name } = req.body;
+        try {
+            const quiz = await QuizModel.findOne({ quizCode: code });
+            if (!quiz) {
+                return res.status(404).json({ error: "Quiz not found" });
+            }
+
+            res.json({ success: true, message: "Successfully joined quiz", quizId: quiz._id });
+        } catch (error) {
+            res.status(500).json({ error: "Failed to join quiz" });
+        }
+    },
+
     
     
 

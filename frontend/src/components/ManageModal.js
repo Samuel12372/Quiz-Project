@@ -16,7 +16,7 @@ const ManageModal = ({open, onClose}) => {
         axios.post(`http://localhost:8080/user/getQuizzes/${userId}`)
         .then((res) => {
             //console.log(res.data.quizzesId);
-            //setQuizzes(res.data.quizzesId);
+            
             getQuizzes(res.data.quizzesId)
         })
         .catch((error) => {
