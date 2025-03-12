@@ -1,11 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal, Input } from 'antd';
+import MCQ from '../MCQ'; // Import the MCQ component
 
-function PlayerView({ quiz, isStarted, handleLeaveClick }) {
+function PlayerView({ quiz,  handleLeaveClick, questions, currentQuestionIndex, socket }) {
 
-  const [isModalVisible, setIsModalVisible] = useState(!quiz.playerName);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [playerName, setPlayerName] = useState(quiz.playerName || `player${Math.floor(Math.random() * 1000)}`);
+  const [currentQuestion, setCurrentQuestion] = useState([]);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [isAnswered, setIsAnswered] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
+  const [isMidQuestion, setIsMidQuestion] = useState(false);
 
+  useEffect(() => {
+    console.log("questions:", questions);
+    console.log("currentQuestionIndex:", currentQuestionIndex);
+    setCurrentQuestion(questions[currentQuestionIndex] || null);
+  }, [questions, currentQuestionIndex]);
+
+  useEffect(() => {
+    const playerName = localStorage.getItem("playerName");
+    
+    if (playerName) {
+      setPlayerName(playerName);
+      setIsModalVisible(false);
+    }
+    else {
+      setIsModalVisible(true);
+    }
+  }, []);
+
+  // Listen for the next question event from the host
+  useEffect(() => {
+    socket.on("next_question", ({ newIndex }) => {
+      //console.log("Next question received");
+      //console.log("newIndex:", newIndex);
+      //console.log("questions:", questions);
+      console.log("questions[newIndex]:", questions[newIndex])
+      setCurrentQuestion(questions[newIndex]);
+      setIsAnswered(false);
+      setSelectedAnswer(null);
+      setIsMidQuestion(true);
+    });
+
+    socket.on("quiz_started", () => {
+      console.log("Quiz started");
+      setIsStarted(true);
+    });
+
+    return () => {
+      socket.off("next_question");
+      socket.off("quiz_started");
+    };
+  }, [socket, questions,]);
 
   const handleOk = () => {
     if (playerName.trim()) {
@@ -19,19 +66,45 @@ function PlayerView({ quiz, isStarted, handleLeaveClick }) {
     setIsModalVisible(false);
   };
 
+  const renderQuestionComponent = (question) => {
+    if (!question) return <p>Waiting for the host to start the next question...</p>;
+    switch (question.questionType) {
+      case 'MCQ':
+        return <MCQ question={question} />;
+      // case 'TrueFalse':
+      //   return <TrueFalse question={question} />;
+      // case 'ShortAnswer':
+      //   return <ShortAnswer question={question} />;
+      default:
+        return <p>Unknown question type</p>;
+    }
+  };
+
+
 
   return (
     <div>
       <h1>{quiz.title}</h1>
       {isStarted ? (
-        <div className="quiz-started-participant">
-          <h2>Quiz in Progress (Participant View)</h2>
-          {/* Add participant-specific content for the quiz in progress here */}
+       isMidQuestion ? (
+        <div className="quiz-mid-question">
+
+          <h2>mid question</h2>
+          {renderQuestionComponent(currentQuestion)}
+          
+          
         </div>
+      ) : (
+        <div className="quiz-started-participant">
+          
+          <h2>Loading Question...</h2>
+        
+        </div>
+      )
       ) : (
         <div className="participant">
           <Button onClick={handleLeaveClick} type="primary" id="LeaveButton">Leave Quiz</Button>
-          <h2>Participant View</h2>
+          <h2>waiting for quiz to start</h2>
           {/* Add participant-specific content here */}
         </div>
       )}

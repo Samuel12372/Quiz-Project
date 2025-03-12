@@ -20,6 +20,7 @@ function QuizJoiner() {
       .then((res) => {
         //console.log(res.data);
         const quizId = res.data.quizId;
+        localStorage.setItem("playerName", name);
         navigate(`/view/${quizId}`);
         
       })
@@ -28,11 +29,7 @@ function QuizJoiner() {
       }); 
     }
 
-
-    //if code is correct, then redirect to the quiz page
-    //if code is incorrect, then show
-    
-
+    //if code is incorrect, then show an error message
 
   };
 
