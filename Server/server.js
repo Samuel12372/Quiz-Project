@@ -50,6 +50,10 @@ io.on("connection", (socket) => {
         io.emit("next_question", {newIndex});
     });
 
+    socket.on("end_quiz", (quizId) => {
+        io.emit("end_quiz", quizId);
+    });
+
     socket.on("submit_answer", ({ quizId, playerName, answer, questionIndex }) => {
         // Validate answer and update score
         const correctAnswer = getCorrectAnswer(quizId, questionIndex);

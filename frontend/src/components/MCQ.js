@@ -1,7 +1,7 @@
 import { Button, Card } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import '../CSS/Questions.css';
+import '../CSS/Participant.css';
 
 
 

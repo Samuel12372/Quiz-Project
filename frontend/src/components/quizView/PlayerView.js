@@ -11,6 +11,8 @@ function PlayerView({ quiz,  handleLeaveClick, questions, currentQuestionIndex, 
   const [isAnswered, setIsAnswered] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
   const [isMidQuestion, setIsMidQuestion] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(5);
+
 
   useEffect(() => {
     console.log("questions:", questions);
@@ -30,6 +32,18 @@ function PlayerView({ quiz,  handleLeaveClick, questions, currentQuestionIndex, 
     }
   }, []);
 
+  useEffect(() => {
+      if (isMidQuestion && timeLeft > 0) {
+        const timer = setInterval(() => {
+          setTimeLeft(timeLeft - 1);
+        }, 1000);
+        return () => clearInterval(timer);
+      } else if (timeLeft === 0) {
+        setTimeLeft(5);
+        setIsMidQuestion(false);
+      }
+    }, [isMidQuestion, timeLeft]);
+
   // Listen for the next question event from the host
   useEffect(() => {
     socket.on("next_question", ({ newIndex }) => {
@@ -48,9 +62,14 @@ function PlayerView({ quiz,  handleLeaveClick, questions, currentQuestionIndex, 
       setIsStarted(true);
     });
 
+    socket.on("end_quiz", () => {
+      setIsStarted(false);
+    });
+
     return () => {
       socket.off("next_question");
       socket.off("quiz_started");
+      socket.off("end_quiz");
     };
   }, [socket, questions,]);
 
@@ -85,12 +104,14 @@ function PlayerView({ quiz,  handleLeaveClick, questions, currentQuestionIndex, 
   return (
     <div>
       <h1>{quiz.title}</h1>
+      {renderQuestionComponent(currentQuestion)}
       {isStarted ? (
        isMidQuestion ? (
         <div className="quiz-mid-question">
 
           <h2>mid question</h2>
-          {renderQuestionComponent(currentQuestion)}
+
+          <p>Time left: {timeLeft} seconds</p>
           
           
         </div>

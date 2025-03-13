@@ -38,6 +38,7 @@ function HostView({ quiz, questions, isStarted, setIsStarted, handleEndClick, so
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
       const newIndex = currentQuestionIndex + 1;
+      //logic for last question
       
       // Emit the next question first
       console.log("Sending next question:", questions[newIndex]);
@@ -49,6 +50,7 @@ function HostView({ quiz, questions, isStarted, setIsStarted, handleEndClick, so
       setTimeLeft(5); // Reset timer
     } else {
       socket.emit("end_quiz", { quizId: quiz.id });
+      setIsStarted(false);
     }
     
   };
@@ -80,9 +82,9 @@ function HostView({ quiz, questions, isStarted, setIsStarted, handleEndClick, so
           <div className="quiz-started-host">
             <Button onClick={handleEndClick} type="primary" id="LeaveButton">End Quiz</Button>
 
-            <h2>Question {currentQuestionIndex + 1} of {questions.length}</h2>
+            <h2>Question {currentQuestionIndex + 2} of {questions.length}</h2>
 
-            <p>{questions[currentQuestionIndex]?.questionText}</p>
+            <p>{questions[currentQuestionIndex + 1]?.questionText}</p>
 
             <Button onClick={handleNextQuestion} type="primary" id="NextButton">Next Question</Button>
 
