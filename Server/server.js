@@ -27,18 +27,33 @@ const io = require("socket.io")(server, {
   
   let players = {};
   let scores = {};
+
   
 io.on("connection", (socket) => {
     //console.log("A user connected");
 
     socket.on("join_quiz", ({ quizId, playerName }) => {
-        if (!players[quizId]) players[quizId] = [];
-        if (!scores[quizId]) scores[quizId] = {};
+        if (!quizId || !playerName) return;
 
-        players[quizId].push(playerName);
-        scores[quizId][playerName] = 0;
+        if (!players[quizId]) {
+            players[quizId] = {};
+        }
 
-        io.emit("update_players", players[quizId]);
+        players[quizId][playerName] = { score: 0 }; // Initialize player with a score of 0
+        io.emit("update_players", { quizId, players: players[quizId] });
+       
+    });
+    socket.on("leave_quiz", ({ quizId, playerName }) => {
+        if (players[quizId]) {
+            delete players[quizId][playerName]; // Remove player from list
+        }
+        if (scores[quizId]) {
+            delete scores[quizId][playerName]; // Remove score
+        }
+    
+        console.log(`Player ${playerName} left quiz ${quizId}`);
+    
+        io.emit("update_players", { quizId, players: players[quizId] || {} });
     });
 
     socket.on("start_quiz", (quizId) => {
@@ -50,22 +65,30 @@ io.on("connection", (socket) => {
         io.emit("next_question", {newIndex});
     });
 
-    socket.on("end_quiz", (quizId) => {
-        io.emit("end_quiz", quizId);
+
+    socket.on("end_quiz", ({quizId}) => {
+        io.emit("end_quiz", { quizId });
+
+        if (players[quizId]) delete players[quizId];
+        if (scores[quizId]) delete scores[quizId];
+
+        console.log(`Quiz ${quizId} ended. Players and scores removed.`);
+        
+        io.emit("update_players", { quizId, players: {} });
     });
 
-    socket.on("submit_answer", ({ quizId, playerName, answer, questionIndex }) => {
-        // Validate answer and update score
-        const correctAnswer = getCorrectAnswer(quizId, questionIndex);
-        if (answer === correctAnswer) {
-        scores[quizId][playerName] += 10; // Add points for correct answer
+    socket.on("request_players", (quizId) => {
+        if (players[quizId]) {
+            socket.emit("update_players", { quizId, players: players[quizId] });
         }
+    });
 
-        io.emit("update_scores", scores[quizId]);
+    socket.on("submit_answer", ({ }) => {
+
     });
 
     socket.on("disconnect", () => {
-        console.log("A user disconnected");
+        
     });
 });
 

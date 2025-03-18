@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Input } from 'antd';
+import { useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
+
+import useTimer from "../../hooks/useTimer";
 import MCQ from '../MCQ'; // Import the MCQ component
+import '../../CSS/Participant.css';
 
-function PlayerView({ quiz,  handleLeaveClick, questions, currentQuestionIndex, socket }) {
+const socket = io("http://localhost:8080");
 
+function PlayerView({ quiz, questions }) {
+
+  const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [playerName, setPlayerName] = useState(quiz.playerName || `player${Math.floor(Math.random() * 1000)}`);
+  const [playerName, setPlayerName] = useState();
+
   const [currentQuestion, setCurrentQuestion] = useState([]);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [isAnswered, setIsAnswered] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
   const [isMidQuestion, setIsMidQuestion] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(5);
+  const [timeLeft, setTimeLeft] = useTimer(5, () => setIsMidQuestion(false));
 
-
-  useEffect(() => {
-    console.log("questions:", questions);
-    console.log("currentQuestionIndex:", currentQuestionIndex);
-    setCurrentQuestion(questions[currentQuestionIndex] || null);
-  }, [questions, currentQuestionIndex]);
 
   useEffect(() => {
     const playerName = localStorage.getItem("playerName");
@@ -26,34 +27,22 @@ function PlayerView({ quiz,  handleLeaveClick, questions, currentQuestionIndex, 
     if (playerName) {
       setPlayerName(playerName);
       setIsModalVisible(false);
+
     }
     else {
       setIsModalVisible(true);
     }
   }, []);
 
-  useEffect(() => {
-      if (isMidQuestion && timeLeft > 0) {
-        const timer = setInterval(() => {
-          setTimeLeft(timeLeft - 1);
-        }, 1000);
-        return () => clearInterval(timer);
-      } else if (timeLeft === 0) {
-        setTimeLeft(5);
-        setIsMidQuestion(false);
-      }
-    }, [isMidQuestion, timeLeft]);
+  
 
   // Listen for the next question event from the host
   useEffect(() => {
+
     socket.on("next_question", ({ newIndex }) => {
-      //console.log("Next question received");
-      //console.log("newIndex:", newIndex);
-      //console.log("questions:", questions);
       console.log("questions[newIndex]:", questions[newIndex])
       setCurrentQuestion(questions[newIndex]);
-      setIsAnswered(false);
-      setSelectedAnswer(null);
+      setTimeLeft(5);
       setIsMidQuestion(true);
     });
 
@@ -64,6 +53,9 @@ function PlayerView({ quiz,  handleLeaveClick, questions, currentQuestionIndex, 
 
     socket.on("end_quiz", () => {
       setIsStarted(false);
+      localStorage.removeItem("playerName");
+      setPlayerName();
+      navigate("/");
     });
 
     return () => {
@@ -71,18 +63,27 @@ function PlayerView({ quiz,  handleLeaveClick, questions, currentQuestionIndex, 
       socket.off("quiz_started");
       socket.off("end_quiz");
     };
-  }, [socket, questions,]);
+  }, [socket, questions]);
 
   const handleOk = () => {
     if (playerName.trim()) {
       setIsModalVisible(false);
       // Update the player name in the quiz object or handle it as needed
-      quiz.playerName = playerName;
+      localStorage.removeItem("playerName");
+      localStorage.setItem("playerName", playerName);
+      socket.emit("join_quiz", { quizId: quiz._id, playerName });
+      
     }
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const handleLeaveClick = () => {
+    socket.emit("leave_quiz", { quizId: quiz._id , playerName });
+    navigate("/");
+    localStorage.removeItem("playerName");
   };
 
   const renderQuestionComponent = (question) => {
@@ -104,31 +105,31 @@ function PlayerView({ quiz,  handleLeaveClick, questions, currentQuestionIndex, 
   return (
     <div>
       <h1>{quiz.title}</h1>
-      {renderQuestionComponent(currentQuestion)}
+      <Button onClick={handleLeaveClick} type="primary" id="LeaveButton">Leave Quiz</Button>
       {isStarted ? (
-       isMidQuestion ? (
-        <div className="quiz-mid-question">
+        isMidQuestion ? (
+          <div className="quiz-mid-question">
 
-          <h2>mid question</h2>
+            {renderQuestionComponent(currentQuestion)}
 
-          <p>Time left: {timeLeft} seconds</p>
-          
-          
-        </div>
-      ) : (
-        <div className="quiz-started-participant">
-          
-          <h2>Loading Question...</h2>
+            <p>Time left: {timeLeft} seconds</p>          
         
-        </div>
-      )
+          </div>
+        ) : (
+          <div className="quiz-started-participant">
+          
+            <h2>Loading Question...</h2>
+        
+          </div>
+        )
       ) : (
         <div className="participant">
-          <Button onClick={handleLeaveClick} type="primary" id="LeaveButton">Leave Quiz</Button>
           <h2>waiting for quiz to start</h2>
           {/* Add participant-specific content here */}
         </div>
       )}
+      
+      {/* player name modal */}
       <Modal
         title="Enter Your Name"
         visible={isModalVisible}

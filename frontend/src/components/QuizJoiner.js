@@ -3,6 +3,9 @@ import { Button, Input, Card} from "antd";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import '../CSS/QuizJoiner.css';
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:8080");
 
 function QuizJoiner() {
 
@@ -21,6 +24,7 @@ function QuizJoiner() {
         //console.log(res.data);
         const quizId = res.data.quizId;
         localStorage.setItem("playerName", name);
+        socket.emit("join_quiz", { quizId: quizId, playerName: name });
         navigate(`/view/${quizId}`);
         
       })

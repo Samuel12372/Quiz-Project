@@ -1,19 +1,51 @@
+/* Participant.js */
 .participant {
     display: flex;
     justify-content: center;
    
 }
-.ChoiceButton{
+
+
+/* HostView.js */
+#EndButton, #NextButton{
     background-color: #f1f1f1;
     border: none;
     color: black;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 12px;
-    padding: 10px 24px;
-    transition-duration: 0.4s;
+    width: 100%;
+    height: 75px;
+    margin: 5px 0;
+}
+
+#leaderboardCard{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 5px 0;
+}
+
+/* PlayerView.js */
+
+/* Question Components */
+/* MCQ component */
+.multiplechoice{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    
+}
+#MCQCard{
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+}
+#ChoiceButton{
+    background-color: #f1f1f1;
+    border: none;
+    color: black;
+    text-align: center;
+    width: 100%;
+    height: 90px;
+    margin: 5px 0;
+    
 }
