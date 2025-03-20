@@ -27,6 +27,8 @@ const io = require("socket.io")(server, {
   
   let players = {};
   let scores = {};
+  let answer = "";
+  let answerOrder = {}; // Tracks answer times for each quiz
 
   
 io.on("connection", (socket) => {
@@ -60,8 +62,10 @@ io.on("connection", (socket) => {
         io.emit("quiz_started", quizId);
     });
 
-    socket.on("next_question", ({ quizId, newIndex }) => {
+    socket.on("next_question", ({ quizId, newIndex, correctAnswer }) => {
         console.log(newIndex);
+        console.log(correctAnswer);
+        answer = correctAnswer;
         io.emit("next_question", {newIndex});
     });
 
@@ -83,8 +87,48 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("submit_answer", ({ }) => {
+    socket.on("submit_answer", ({ quizId, playerName, option}) => {
+        if (!quizId || !playerName || !option) return;
 
+        console.log(`Answer received from ${playerName}: ${option}`);
+
+        if (!answerOrder[quizId]) {
+            answerOrder[quizId] = [];
+        }
+        // Record the submission time
+        answerOrder[quizId].push({ playerName, time: Date.now() });
+
+        // Check if the answer is correct
+        if (option === answer) {
+            if (!scores[quizId]) {
+                scores[quizId] = {};
+            }
+
+            if (!scores[quizId][playerName]) {
+                scores[quizId][playerName] = 0;
+            }
+
+            // Award 10 points for the correct answer
+            scores[quizId][playerName] += 10;
+
+            // Sort the answerOrder array by submission time
+            answerOrder[quizId].sort((a, b) => a.time - b.time);
+
+            // Award bonus points to the 3 fastest players
+            const bonusPoints = [5, 3, 1];
+            for (let i = 0; i < 3; i++) {
+                if (answerOrder[quizId][i]) {
+                    const fastestPlayer = answerOrder[quizId][i].playerName;
+                    if (scores[quizId][fastestPlayer]) {
+                        scores[quizId][fastestPlayer] += bonusPoints[i];
+                    }
+                }
+            }
+
+            // Emit the updated scores and the fastest players
+            io.emit("update_scores", { quizId, scores: scores[quizId] });
+            io.emit("fastest_players", { quizId, fastestPlayers: answerOrder[quizId].slice(0, 3).map(entry => entry.playerName) });
+        }
     });
 
     socket.on("disconnect", () => {

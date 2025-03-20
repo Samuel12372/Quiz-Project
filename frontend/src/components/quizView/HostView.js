@@ -16,31 +16,48 @@ function HostView({ quiz, questions,}) {
   const [isStarted, setIsStarted] = useState(false);
   
   const [players, setPlayers] = useState([]); 
+  const [fastestPlayers, setFastestPlayers] = useState([]);
   
-
 
   useEffect(() => {
     socket.on("update_players", ({ quizId, players }) => {
       
       // Format player data into an array
-      const formattedPlayers = Object.entries(players || {}).map(([name, score]) => ({
+      const formattedPlayers = Object.entries(players || {}).map(([name, details]) => ({
         name: name,
-        score: score || 0
+        score: details.score || 0
       }));
 
       setPlayers(formattedPlayers);
       console.log("Updated players state:", formattedPlayers);
     });
+
     socket.on("end_quiz", () => {
       setPlayers([]); // Reset players on quiz end
       setCurrentQuestionIndex(-1);
       setIsStarted(false);
     });
+
+    socket.on("update_scores", ({ quizId, scores }) => {
+      console.log("Received updated scores:", scores);
+      // Update the players state with the new scores
+      setPlayers((prevPlayers) =>
+        prevPlayers.map((player) => ({
+          ...player,
+          score: scores[player.name] || player.score,
+        }))
+      );
+    });
+
+    socket.on("fastest_players", ({ quizId, fastestPlayers }) => {
+      console.log("Received fastest players:", fastestPlayers);
+      setFastestPlayers(fastestPlayers);
+    });
     
-    
-  
     return () => {
       socket.off("update_players");
+      socket.off("end_quiz");
+      socket.off("fastest_players");
       socket.off("end_quiz");
     };
   }, []);
@@ -57,7 +74,8 @@ function HostView({ quiz, questions,}) {
       
       // Emit the next question first
       console.log("Sending next question:", questions[newIndex]);
-      socket.emit("next_question", { quizId: quiz._id, newIndex });
+      console.log("Correct answer:", questions[newIndex].correctAnswer);
+      socket.emit("next_question", { quizId: quiz._id, newIndex, correctAnswer: questions[newIndex].correctAnswer });
   
       // Update the state for the new question
       setCurrentQuestionIndex(newIndex);
@@ -121,8 +139,11 @@ function HostView({ quiz, questions,}) {
               <List
                 dataSource={players}
                 renderItem={(player) => (
-                  <List.Item >
-                    <strong>{player.name}</strong> - {player.score} points
+                  <List.Item>
+                    <List.Item.Meta
+                      title={player.name}
+                      description={`Score: ${player.score}`}
+                    />
                   </List.Item>
                 )}
               />

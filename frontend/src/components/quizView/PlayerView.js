@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Input } from 'antd';
-import { useNavigate } from "react-router-dom";
+import { Button, Modal, Input, Form } from 'antd';
+import { useNavigate, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 
 import useTimer from "../../hooks/useTimer";
@@ -12,6 +12,7 @@ const socket = io("http://localhost:8080");
 function PlayerView({ quiz, questions }) {
 
   const navigate = useNavigate();
+  const location = useLocation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [playerName, setPlayerName] = useState();
 
@@ -19,6 +20,8 @@ function PlayerView({ quiz, questions }) {
   const [isStarted, setIsStarted] = useState(false);
   const [isMidQuestion, setIsMidQuestion] = useState(false);
   const [timeLeft, setTimeLeft] = useTimer(5, () => setIsMidQuestion(false));
+  const [selectedOption, setSelectedOption] = useState(null);
+  
 
 
   useEffect(() => {
@@ -41,6 +44,7 @@ function PlayerView({ quiz, questions }) {
 
     socket.on("next_question", ({ newIndex }) => {
       console.log("questions[newIndex]:", questions[newIndex])
+      setSelectedOption(null);
       setCurrentQuestion(questions[newIndex]);
       setTimeLeft(5);
       setIsMidQuestion(true);
@@ -57,6 +61,8 @@ function PlayerView({ quiz, questions }) {
       setPlayerName();
       navigate("/");
     });
+    
+    socket.on()
 
     return () => {
       socket.off("next_question");
@@ -65,6 +71,35 @@ function PlayerView({ quiz, questions }) {
     };
   }, [socket, questions]);
 
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      socket.emit("leave_quiz", { quizId: quiz._id, playerName });
+      localStorage.removeItem("playerName");
+      event.preventDefault();
+      event.returnValue = '';
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [quiz._id, playerName]);
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      if (location.pathname !== `/quiz/${quiz._id}`) {
+        socket.emit("leave_quiz", { quizId: quiz._id, playerName });
+        localStorage.removeItem("playerName");
+      }
+    };
+
+    handleRouteChange(); // Check on initial render
+    return () => {
+      handleRouteChange(); // Check on cleanup
+    };
+  }, [location.pathname, quiz._id, playerName]);
+
   const handleOk = () => {
     if (playerName.trim()) {
       setIsModalVisible(false);
@@ -72,12 +107,7 @@ function PlayerView({ quiz, questions }) {
       localStorage.removeItem("playerName");
       localStorage.setItem("playerName", playerName);
       socket.emit("join_quiz", { quizId: quiz._id, playerName });
-      
-    }
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
+    } 
   };
 
   const handleLeaveClick = () => {
@@ -90,7 +120,7 @@ function PlayerView({ quiz, questions }) {
     if (!question) return <p>Waiting for the host to start the next question...</p>;
     switch (question.questionType) {
       case 'MCQ':
-        return <MCQ question={question} />;
+        return <MCQ question={question} onAnswerSelected={onAnswerSelected} />;
       // case 'TrueFalse':
       //   return <TrueFalse question={question} />;
       // case 'ShortAnswer':
@@ -98,6 +128,12 @@ function PlayerView({ quiz, questions }) {
       default:
         return <p>Unknown question type</p>;
     }
+  };
+
+  const onAnswerSelected = (option) => {
+    console.log("Selected option:", option);
+    setSelectedOption(option);
+    socket.emit("submit_answer", { quizId: quiz._id, playerName, option });
   };
 
 
@@ -110,9 +146,10 @@ function PlayerView({ quiz, questions }) {
         isMidQuestion ? (
           <div className="quiz-mid-question">
 
-            {renderQuestionComponent(currentQuestion)}
+            {!selectedOption && renderQuestionComponent(currentQuestion)}
 
-            <p>Time left: {timeLeft} seconds</p>          
+            <p>Time left: {timeLeft} seconds</p>  
+            {selectedOption && <p>Option selected: {selectedOption}</p>}        
         
           </div>
         ) : (
@@ -131,16 +168,39 @@ function PlayerView({ quiz, questions }) {
       
       {/* player name modal */}
       <Modal
-        title="Enter Your Name"
+        title="Quiz Name"
         visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        onOk={handleOk}       
+        closable={false}
+        maskClosable={false}
+        footer={null}
       >
-        <Input
-          placeholder="Enter your name"
-          value={playerName}
-          onChange={(e) => setPlayerName(e.target.value)}
-        />
+        <Form
+          name="playerNameForm"
+          initialValues={{ playerName: playerName }}
+          onFinish={handleOk}
+        >
+          <Form.Item
+            name="playerName"
+            rules={[
+              {
+                required: true,
+                message: 'Enter a name to Join the Quiz',
+              },
+            ]}
+          >
+            <Input
+              //placeholder=""
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button id="okButton" type="primary" htmlType="submit">
+              OK
+            </Button>
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   );

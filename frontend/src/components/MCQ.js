@@ -6,6 +6,9 @@ import '../CSS/Participant.css';
 
 
 function MCQ({ question, onAnswerSelected }) {
+
+  
+
   if (!question) {
     return <p>Waiting for the question...</p>;
   }
