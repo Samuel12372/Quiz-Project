@@ -2,6 +2,7 @@ import { Modal, List, Button} from 'antd';
 import { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import '../CSS/Modals.css';
 
 
 const ManageModal = ({open, onClose}) => {
@@ -94,9 +95,10 @@ const ManageModal = ({open, onClose}) => {
     };
 
     return (
-        <div className="manageModal">
-            <Modal open={open} onCancel={onClose} footer={null}>
+        <div>
+            <Modal className="manageModal" title='Manage Quizzes'open={open} onCancel={onClose} footer={null}>
             <List
+                    className='quizList'
                     itemLayout="horizontal"
                     dataSource={quizzes}
                     renderItem={quiz => (

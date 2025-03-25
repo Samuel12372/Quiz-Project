@@ -1,87 +1,72 @@
-
-.navbar{
+.navbar {
   display: flex;
-  padding: 10px;
-  margin: 20px;
   justify-content: space-between;
-  position: relative;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 20px;
 }
 
-#ManageButton, #CreateButton, #LogoutButton, #LoginButton {
-  width: 200px;
-  background-color: black;
-  margin: 2px;
-  position: absolute; 
-  z-index: 2;
+#ManageButton, #CreateButton, #LogoutButton, #LoginButton, #LeaderboardButton {
+  width: 180px;
+  background-color:rgba(0, 0, 0, 0.641); 
+  border: 1px solid rgba(255, 255, 255, 0.6); 
+  margin: 5px;
+  padding: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  z-index: 10;
 }
 
-#ManageButton {
-  left: 0; 
+#ManageButton:hover, #CreateButton:hover, #LogoutButton:hover, #LoginButton:hover, #LeaderboardButton:hover {
+  background-color: #1a237e;
 }
 
+/* Centering Create Button */
 #CreateButton {
-  left: 50%; 
-  transform: translateX(-50%); /* Center the button */
+  margin: 0 auto;
 }
 
-#LogoutButton {
-  left: 100%; 
-  transform: translateX(-100%); /* Button on the right */
+/* Positioning Leaderboard Button to the far right */
+#LeaderboardButton {
+  position: absolute;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
 }
-
-#LoginButton {
-  left: 0; 
-}
-
 
 /* title css */
-
-
-
 .code {
   position: absolute;
   top: 30%;
-  left:50%;
-  transform: translate(-50%,-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 0;
 }
 
 h3 {
-  font-size:12vw;
+  font-size: 12vw;
   white-space: nowrap;
   overflow: hidden;
   line-height: 220px;
-  color: #241d1d; /* change this */
-  /* text-shadow: 0 10px 7px rgba(0,0,0,0.4),0 -10px 1px #ffffff; */
+  color: white; /* Changed color from dark gray to gold */
   letter-spacing: -3px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-
 h3:hover {
-  animation: glitch .3s linear infinite;
+  animation: glitch 0.3s linear infinite;
   cursor: pointer;
 }
 
 @keyframes glitch {
-  0% {
-    transform: translate(0);
-  }
-  20% {
-    transform: translate(-2px, 2px);
-  }
-  40% {
-    transform: translate(-2px, -2px);
-  }
-  60% {
-    transform: translate(2px, 2px);
-  }
-  80% {
-    transform: translate(2px, -2px);
-  }
-  100% {
-    transform: translate(0);
-  }
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
 }
-
-
-

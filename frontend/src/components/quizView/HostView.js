@@ -7,7 +7,7 @@ const socket = io("http://localhost:8080");
 
 
 
-function HostView({ quiz, questions,}) {
+function HostView({ quiz, questions, quizCode }) {
   const quizJoinLink = `http://localhost:3000/join/${quiz.id}`;
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
@@ -52,6 +52,7 @@ function HostView({ quiz, questions,}) {
     socket.on("fastest_players", ({ quizId, fastestPlayers }) => {
       console.log("Received fastest players:", fastestPlayers);
       setFastestPlayers(fastestPlayers);
+      
     });
     
     return () => {
@@ -93,6 +94,7 @@ function HostView({ quiz, questions,}) {
 
   const startQuiz = () => {
     setIsStarted(true);
+    setFastestPlayers([]);
     socket.emit("start_quiz", { quizId: quiz._id }); 
     console.log(players);
   };
@@ -124,12 +126,12 @@ function HostView({ quiz, questions,}) {
         ) : (
           <div className="quiz-started-host">
             <Button onClick={handleEndClick} type="primary" id="EndButton">End Quiz</Button>
-            <Button onClick={handleNextQuestion} type="primary" id="NextButton">Next Question</Button>
+            <Button onClick={handleNextQuestion} type="primary" id="NextButton">Continue</Button>
             <h1>{quiz.title}</h1>
 
             <h2>Question {currentQuestionIndex + 2} of {questions.length}</h2>
-
-            <p>{questions[currentQuestionIndex + 1]?.questionText}</p>
+            
+            <p>Current Question: {questions[currentQuestionIndex + 1]?.questionText}</p>
 
 
           
@@ -137,7 +139,7 @@ function HostView({ quiz, questions,}) {
             <Card id="leaderboardCard" title="Leaderboard">
             {players.length > 0 ? (
               <List
-                dataSource={players}
+                dataSource={players.sort((a, b) => b.score - a.score)}
                 renderItem={(player) => (
                   <List.Item>
                     <List.Item.Meta
@@ -151,6 +153,26 @@ function HostView({ quiz, questions,}) {
               <p>No players have joined.</p>
             )}
             </Card>
+
+            {/* fastest players */}
+            <Card id="fastestPlayersCard" title="Fastest Team" >
+              {/* <p>The fastest teams to answer the previous question</p> */}
+            {fastestPlayers.length > 0 ? (
+              <List
+                dataSource={fastestPlayers}
+                renderItem={(player) => (
+                  <List.Item>
+                    <List.Item.Meta
+                      title={player}
+                      //description={`Time: ${player.time}`}
+                    />
+                  </List.Item>
+                )}
+              />
+            ) : (
+              <p>Loading...</p>
+            )}
+            </Card>
             
 
           </div>
@@ -158,7 +180,7 @@ function HostView({ quiz, questions,}) {
       ) : (
         <div className="host-preQuiz">
           <h1>{quiz.title}</h1>
-          <h2>Quiz Code - {/* quiz code logic */}</h2>
+          <h2>Quiz Code - {quizCode}</h2>
           <div className="qr-code">
             <QRCode value={quizJoinLink} size={200} />
           </div>

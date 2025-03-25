@@ -59,8 +59,9 @@ const Login = ({ open, onClose, onSuccess }) => {
 
 
     return (
-        <div className="login">
+        <div >
            <Modal
+           className="login"
             title={formName}
             open={open}
             onCancel={handleClose}

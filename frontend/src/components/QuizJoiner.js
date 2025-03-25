@@ -17,7 +17,7 @@ function QuizJoiner() {
   const handleJoinClick = async() => {
     console.log(code); 
     console.log(name);
-    if(name && code){
+    if(code){
       setInfo(true);
       await axios.post(`http://localhost:8080/quiz/join`, {code, name})
       .then((res) => {
@@ -40,7 +40,7 @@ function QuizJoiner() {
   
   return (
     <div className="quizjoiner">
-      <Card title="Join Quiz" id="joinCard">
+      <Card  id="joinCard">
         <Input 
           type="text" 
           placeholder="Enter Code" 
@@ -48,14 +48,14 @@ function QuizJoiner() {
           value ={code} 
           onChange={(e) => setCode(e.target.value)}
         />
-        <Input 
+        <Button onClick={handleJoinClick} type ="primary" id = "joinButton">Join Quiz</Button>
+        {/* <Input 
           type="text" 
           placeholder="Enter Name" 
           id = "nameInput"
           value ={name} 
           onChange={(e) => setName(e.target.value)}
-        />
-        <Button onClick={handleJoinClick} type ="primary" id = "joinButton">Enter</Button>
+        /> */}
       </Card>
     </div>
   );

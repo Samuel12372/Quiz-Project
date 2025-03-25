@@ -52,8 +52,8 @@ const CreateModal = ({ open, onClose }) => {
 
 
     return(
-        <div className="createModal">
-            <Modal title="Create Quiz" open={open} onCancel={onClose} footer={null} >
+        <div >
+            <Modal className="createModal" title="Create Quiz" open={open} onCancel={onClose} footer={null} >
                 <Form
                     form={form}
                     name="create"

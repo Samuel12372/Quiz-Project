@@ -28,8 +28,8 @@ const [leaderboardData, setLeaderboardData] = useState([]);
     }, []);
 
   return (
-    <div className="leaderboard">
-      <Modal open={open} onCancel={onClose} footer={null}>
+    <div >
+      <Modal className="leaderboard" open={open} onCancel={onClose} footer={null}>
         <h1>Leaderboard</h1>
         <List
           itemLayout="horizontal"

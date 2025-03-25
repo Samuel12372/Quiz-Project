@@ -1,0 +1,166 @@
+/* manage modal */
+
+.manageModal .ant-modal-content {
+    background-color:rgb(51, 66, 81, 1)!important;
+    color: white !important;
+}
+
+.manageModal .ant-modal-header {
+    background-color:rgb(51, 66, 81)!important;
+    color: white !important; /* White header text */
+    border-bottom: none; /* Remove the default border */
+}
+.manageModal .ant-modal-title {
+    color: white !important; /* Make sure the modal title is white */
+}
+.manageModal .quizList .ant-list-item {
+    background-color: rgba(255, 255, 255, 0) !important;
+    color: white !important;
+    /* border-top: 1px solid rgba(255, 255, 255, 0.2); */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+}
+
+.manageModal .ant-btn {
+    background-color: rgba(50, 50, 50, 1) !important;
+    color: white !important;
+    border: none;
+}
+
+.manageModal .ant-btn:hover {
+    background-color: rgba(80, 80, 80, 1) !important;
+}
+
+.manageModal .ant-list-item-meta {
+    color: white !important; /* Ensure that text inside List.Item.Meta is white */
+}
+
+.manageModal .ant-list-item-meta .ant-list-item-meta-title,
+.manageModal .ant-list-item-meta .ant-list-item-meta-description {
+    color: white !important; /* Set both title and description to white */
+}
+
+
+/* create modal */
+
+/* Create Modal Background and Text Color */
+.createModal .ant-modal-content {
+    background-color: rgb(51, 66, 81) !important; /* Slate blue background */
+    color: white !important; /* White text */
+}
+
+/* Modal Header (Title) */
+.createModal .ant-modal-header {
+    background-color: rgb(51, 66, 81) !important; /* Slate blue background */
+    color: white !important; /* White text */
+    border-bottom: none !important; /* Remove the default border */
+}
+
+/* Modal Title Text Color */
+.createModal .ant-modal-title {
+    color: white !important; /* White title text */
+}
+
+/* Form input fields */
+.createModal .ant-input {
+    background-color: rgba(70, 80, 90, 0.8) !important; /* Slightly lighter slate for inputs */
+    color: white !important; /* White text in inputs */
+    border: none !important; /* Remove border */
+}
+
+.createModal .ant-input:focus {
+    border-color: rgba(50, 50, 50, 0.9) !important; /* Lighter border on focus */
+}
+
+/* Form labels */
+.createModal .ant-form-item-label > label {
+    color: white !important; /* Ensure form item labels are white */
+}
+
+/* Button Styling */
+.createModal .ant-btn {
+    background-color: rgba(50, 50, 50, 1) !important; /* Dark buttons */
+    color: white !important; /* White text */
+    border: none;
+}
+
+.createModal .ant-btn:hover {
+    background-color: rgba(80, 80, 80, 1) !important; /* Slightly lighter on hover */
+}
+
+/* Button Container */
+.createModal .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* leaderboard modal */
+
+/* Leaderboard Modal Background and Text Color */
+.leaderboard .ant-modal-content {
+    background-color: rgb(51, 66, 81) !important; /* Slate blue background */
+    color: white !important; /* White text */
+}
+
+
+/* List Meta Title (Username) and Description (Points) */
+.leaderboard .ant-list-item-meta-title {
+    color: white !important; /* White username */
+}
+
+.leaderboard .ant-list-item-meta-description {
+    color: white !important; /* White points */
+}
+
+
+/* login modal */
+
+/* Login Modal Background and Text Color */
+.login .ant-modal-content {
+    background-color: rgb(51, 66, 81) !important; /* Slate blue background */
+    color: white !important; /* White text */
+}
+
+/* Modal Header (Title) */
+.login .ant-modal-header {
+    background-color: rgb(51, 66, 81) !important; /* Slate blue background */
+    color: white !important; /* White text */
+    border-bottom: none !important; /* Remove the default border */
+}
+
+/* Modal Title Text Color */
+.login .ant-modal-title {
+    color: white !important; /* White title text */
+}
+
+/* Modal Body */
+
+
+/* Form Item Labels */
+.login .ant-form-item-label > label {
+    color: white !important; /* White labels */
+}
+
+/* Input Fields */
+.login .ant-input,
+.login .ant-input-password {
+    background-color: rgba(70, 80, 90, 0.8) !important; /* Darker background for input fields */
+    color: white !important; /* White text inside inputs */
+}
+
+/* Button */
+.login .ant-btn-primary {
+    background-color: rgba(50, 50, 50, 1) !important; /* Slate blue button */
+    border-color: rgb(255, 255, 255) !important; /* Matching border */
+}
+
+/* Button Hover */
+.login .ant-btn-primary:hover {
+    background-color: rgba(80, 80, 80, 1)!important; /* Darker slate blue when hovered */
+    border-color: rgba(80, 80, 80, 1) !important;
+}
+
+/* Error Message */
+.login .ant-form-item-explain {
+    color: red !important; /* Red error message */
+}

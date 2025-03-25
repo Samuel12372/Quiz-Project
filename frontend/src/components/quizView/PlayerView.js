@@ -21,6 +21,7 @@ function PlayerView({ quiz, questions }) {
   const [isMidQuestion, setIsMidQuestion] = useState(false);
   const [timeLeft, setTimeLeft] = useTimer(5, () => setIsMidQuestion(false));
   const [selectedOption, setSelectedOption] = useState(null);
+  const [answer, setAnswer] = useState("");
   
 
 
@@ -44,8 +45,10 @@ function PlayerView({ quiz, questions }) {
 
     socket.on("next_question", ({ newIndex }) => {
       console.log("questions[newIndex]:", questions[newIndex])
+      //console.log(questions[newIndex].answer);
       setSelectedOption(null);
       setCurrentQuestion(questions[newIndex]);
+      setAnswer(questions[newIndex].correctAnswer);
       setTimeLeft(5);
       setIsMidQuestion(true);
     });
@@ -155,7 +158,8 @@ function PlayerView({ quiz, questions }) {
         ) : (
           <div className="quiz-started-participant">
           
-            <h2>Loading Question...</h2>
+
+            <h2>{answer}</h2>
         
           </div>
         )

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 
 import HostView from "../components/quizView/HostView";
@@ -12,9 +12,11 @@ const socket = io("http://localhost:8080");
 function Participant() {
   const { quizId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [quiz, setQuiz] = useState({});
   const [questions, setQuestions] = useState([]);
   const [isHost, setIsHost] = useState(false);
+  const [quizCode, setQuizCode] = useState(location.state?.quizCode || "");
   
 
   useEffect(() => {
@@ -56,7 +58,7 @@ function Participant() {
   return (
     <div className="participant">
       {isHost ? ( 
-        <HostView quiz={quiz} questions={questions}/>  
+        <HostView quiz={quiz} questions={questions} quizCode={quizCode}/>  
       ) : (
         <PlayerView quiz={quiz} questions={questions}/>
       )}
