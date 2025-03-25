@@ -5,6 +5,7 @@ import { io } from "socket.io-client";
 
 import useTimer from "../../hooks/useTimer";
 import MCQ from '../MCQ'; // Import the MCQ component
+import TrueFalse from '../TF'; // Import the TrueFalse component
 import '../../CSS/Participant.css';
 
 const socket = io("http://localhost:8080");
@@ -44,6 +45,7 @@ function PlayerView({ quiz, questions }) {
   useEffect(() => {
 
     socket.on("next_question", ({ newIndex }) => {
+      setIsStarted(true);
       console.log("questions[newIndex]:", questions[newIndex])
       //console.log(questions[newIndex].answer);
       setSelectedOption(null);
@@ -124,8 +126,8 @@ function PlayerView({ quiz, questions }) {
     switch (question.questionType) {
       case 'MCQ':
         return <MCQ question={question} onAnswerSelected={onAnswerSelected} />;
-      // case 'TrueFalse':
-      //   return <TrueFalse question={question} />;
+      case 'T/F':
+        return <TrueFalse question={question} onAnswerSelected={onAnswerSelected} />;
       // case 'ShortAnswer':
       //   return <ShortAnswer question={question} />;
       default:
@@ -135,16 +137,16 @@ function PlayerView({ quiz, questions }) {
 
   const onAnswerSelected = (option) => {
     console.log("Selected option:", option);
-    setSelectedOption(option);
     socket.emit("submit_answer", { quizId: quiz._id, playerName, option });
+    setSelectedOption(option);
   };
 
 
 
   return (
     <div>
-      <h1>{quiz.title}</h1>
       <Button onClick={handleLeaveClick} type="primary" id="LeaveButton">Leave Quiz</Button>
+      <h1>{quiz.title}</h1>
       {isStarted ? (
         isMidQuestion ? (
           <div className="quiz-mid-question">
@@ -158,8 +160,8 @@ function PlayerView({ quiz, questions }) {
         ) : (
           <div className="quiz-started-participant">
           
-
-            <h2>{answer}</h2>
+            
+            <h2>Answer: {answer}</h2>
         
           </div>
         )

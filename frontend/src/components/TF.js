@@ -1,16 +1,20 @@
 import { Button } from "antd";
+import '../CSS/Participant.css';
 
 
 
-function TrueFalse() {
+function TrueFalse({ question, onAnswerSelected }) {
 
-    const handleTrueClick = () => {};
-    const handleFalseClick = () => {};
+  
+  if (!question) {
+    return <p>Waiting for the question...</p>;
+  }
 
   return (
     <>
-        <Button onClick={handleTrueClick} type="primary" id="TrueButton">True</Button>
-        <Button onClick={handleFalseClick}type="primary" id="FalseButton">False</Button>
+      <h2>{question.questionText}</h2>
+        <Button onClick={() => onAnswerSelected("true")} type="primary" id="ChoiceButton">True</Button>
+        <Button onClick={() => onAnswerSelected("false")}type="primary" id="ChoiceButton">False</Button>
     </>
   );
 }

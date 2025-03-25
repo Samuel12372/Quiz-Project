@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, QRCode, Card, List } from 'antd';
 import useTimer from "../../hooks/useTimer";
 import { io } from "socket.io-client";
+import '../../CSS/Participant.css';
 
 const socket = io("http://localhost:8080");
 
@@ -17,6 +18,7 @@ function HostView({ quiz, questions, quizCode }) {
   
   const [players, setPlayers] = useState([]); 
   const [fastestPlayers, setFastestPlayers] = useState([]);
+  const [showLeaderboard, setShowLeaderboard] = useState(true); 
   
 
   useEffect(() => {
@@ -125,8 +127,8 @@ function HostView({ quiz, questions, quizCode }) {
           </div>
         ) : (
           <div className="quiz-started-host">
-            <Button onClick={handleEndClick} type="primary" id="EndButton">End Quiz</Button>
-            <Button onClick={handleNextQuestion} type="primary" id="NextButton">Continue</Button>
+            <Button onClick={handleEndClick} type="primary" id="EndButton"><h2>End Quiz</h2></Button>
+            <Button onClick={handleNextQuestion} type="primary" id="NextButton"><h2>Continue</h2></Button>
             <h1>{quiz.title}</h1>
 
             <h2>Question {currentQuestionIndex + 2} of {questions.length}</h2>
@@ -135,43 +137,48 @@ function HostView({ quiz, questions, quizCode }) {
 
 
           
-            {/* leaderboard */}
-            <Card id="leaderboardCard" title="Leaderboard">
-            {players.length > 0 ? (
-              <List
-                dataSource={players.sort((a, b) => b.score - a.score)}
-                renderItem={(player) => (
-                  <List.Item>
-                    <List.Item.Meta
-                      title={player.name}
-                      description={`Score: ${player.score}`}
-                    />
-                  </List.Item>
-                )}
-              />
-            ) : (
-              <p>No players have joined.</p>
-            )}
-            </Card>
+            {/* Merged Leaderboard and Fastest Players Card */}
+            <Card className="leaderboardCard"> 
+            <Button 
+              type="primary" 
+              onClick={() => setShowLeaderboard(!showLeaderboard)}
+              id="leaderboardButton"
+            >
+              <h2>{showLeaderboard ? "Leaderboard" : "Fastest Teams"}</h2>
+            </Button>
+              
 
-            {/* fastest players */}
-            <Card id="fastestPlayersCard" title="Fastest Team" >
-              {/* <p>The fastest teams to answer the previous question</p> */}
-            {fastestPlayers.length > 0 ? (
-              <List
-                dataSource={fastestPlayers}
-                renderItem={(player) => (
-                  <List.Item>
-                    <List.Item.Meta
-                      title={player}
-                      //description={`Time: ${player.time}`}
-                    />
-                  </List.Item>
-                )}
-              />
-            ) : (
-              <p>Loading...</p>
-            )}
+              {showLeaderboard ? (
+                players.length > 0 ? (
+                  <List
+                    className="leaderboardList"
+                    dataSource={players.sort((a, b) => b.score - a.score)}
+                    renderItem={(player) => (
+                      <List.Item>
+                        <List.Item.Meta
+                          title={<span style={{ color: "white" }}>{player.name}</span>}
+                          description={<span style={{ color: "white" }}>Score: {player.score}</span>}
+                        />
+                      </List.Item>
+                    )}
+                  />
+                ) : (
+                  <p>No players have joined.</p>
+                )
+              ) : (
+                fastestPlayers.length > 0 ? (
+                  <List
+                    dataSource={fastestPlayers}
+                    renderItem={(player) => (
+                      <List.Item>
+                        <List.Item.Meta title={<span style={{ color: "white" }}>{player}</span>}/>
+                      </List.Item>
+                    )}
+                  />
+                ) : (
+                  <p>No fastest teams recorded.</p>
+                )
+              )}
             </Card>
             
 
@@ -180,19 +187,22 @@ function HostView({ quiz, questions, quizCode }) {
       ) : (
         <div className="host-preQuiz">
           <h1>{quiz.title}</h1>
-          <h2>Quiz Code - {quizCode}</h2>
-          <div className="qr-code">
-            <QRCode value={quizJoinLink} size={200} />
-          </div>
-          <Button type='primary' onClick={startQuiz}>Start Quiz</Button>
 
-          <Card id="playersCard" title="Current Players">
+          <Card className="startCard" >
+            <h2>Quiz Code - {quizCode}</h2>
+            <div className="qr-code">
+              <QRCode value={quizJoinLink} size={200} className="QR" fgColor="#000000" bgColor="#ffffff" />
+            </div>
+            <Button id="StartButton" type='primary' onClick={startQuiz}><h2>Start Quiz</h2></Button>
+            <h2>Current Players</h2>
             {players.length > 0 ? (
               <List
+                className="playerList"
                 dataSource={players}
+                
                 renderItem={(player) => (
                   <List.Item key={player.id}>
-                    <strong>{player.name}</strong>
+                    <strong className="playerName">{player.name}</strong>
                   </List.Item>
                 )}
               />

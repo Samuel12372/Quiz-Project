@@ -15,7 +15,7 @@ function MCQ({ question, onAnswerSelected }) {
 
   return (
     <div className="multiplechoice">
-      <Card title={question.questionText} id="MCQCard">
+      <h2>{question.questionText}</h2>
         {question.options.map((option, index) => (
           <Button 
             key={index} 
@@ -23,10 +23,10 @@ function MCQ({ question, onAnswerSelected }) {
             type="primary" 
             id="ChoiceButton"
           >
-            {option}
+            <h2>{option}</h2>
           </Button>
         ))}
-      </Card>
+      
     </div>
   );
 }
