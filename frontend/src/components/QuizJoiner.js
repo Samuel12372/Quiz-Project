@@ -23,8 +23,9 @@ function QuizJoiner() {
       .then((res) => {
         //console.log(res.data);
         const quizId = res.data.quizId;
+        const userId = localStorage.getItem("userId");
         localStorage.setItem("playerName", name);
-        socket.emit("join_quiz", { quizId: quizId, playerName: name });
+        socket.emit("join_quiz", { quizId: quizId, playerName: name, userId: userId });
         navigate(`/view/${quizId}`);
         
       })

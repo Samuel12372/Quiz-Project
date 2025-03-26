@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Button, QRCode, Card, List } from 'antd';
 import useTimer from "../../hooks/useTimer";
 import { io } from "socket.io-client";
+import { useNavigate } from "react-router-dom";
+import {CloseCircleOutlined} from '@ant-design/icons';
 import '../../CSS/Participant.css';
+
 
 const socket = io("http://localhost:8080");
 
@@ -15,6 +18,7 @@ function HostView({ quiz, questions, quizCode }) {
   const [isMidQuestion, setIsMidQuestion] = useState(false);
   const [timeLeft, setTimeLeft] = useTimer(5, () => setIsMidQuestion(false));
   const [isStarted, setIsStarted] = useState(false);
+  const navigate = useNavigate();
   
   const [players, setPlayers] = useState([]); 
   const [fastestPlayers, setFastestPlayers] = useState([]);
@@ -108,7 +112,13 @@ function HostView({ quiz, questions, quizCode }) {
     setIsStarted(false);
   };
 
-
+  const exitQuiz = () => {
+    // socket.emit("end_quiz", { quizId: quiz._id });
+    // setPlayers([]);
+    // setCurrentQuestionIndex(-1);
+    // setIsStarted(false);
+    navigate("/");
+  };
 
 
   return (
@@ -189,6 +199,9 @@ function HostView({ quiz, questions, quizCode }) {
           <h1>{quiz.title}</h1>
 
           <Card className="startCard" >
+            <div className="exitButtonContainer">
+              <Button id="ExitButton" onClick={exitQuiz} icon={<CloseCircleOutlined />} />
+            </div>
             <h2>Quiz Code - {quizCode}</h2>
             <div className="qr-code">
               <QRCode value={quizJoinLink} size={200} className="QR" fgColor="#000000" bgColor="#ffffff" />

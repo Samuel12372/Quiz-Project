@@ -12,6 +12,7 @@ const { Server } = require('socket.io');
 const connectDB = require('./DB/connection');
 const quizzes = require('./Routes/Quizzes');
 const users = require('./Routes/User');
+const User = require('./Models/UserModel');
 
 
 const PORT = process.env.PORT;  
@@ -35,14 +36,16 @@ const io = require("socket.io")(server, {
 io.on("connection", (socket) => {
     //console.log("A user connected");
 
-    socket.on("join_quiz", ({ quizId, playerName }) => {
+    socket.on("join_quiz", ({ quizId, playerName, userId }) => {
         if (!quizId || !playerName) return;
+
+        console.log(userId);
 
         if (!players[quizId]) {
             players[quizId] = {};
         }
 
-        players[quizId][playerName] = { score: 0 }; // Initialize player with a score of 0
+        players[quizId][playerName] = { score: 0, userId: userId || null }; // Initialize player with a score of 0
         io.emit("update_players", { quizId, players: players[quizId] });
        
     });
@@ -71,14 +74,41 @@ io.on("connection", (socket) => {
     });
 
 
-    socket.on("end_quiz", ({quizId}) => {
+    socket.on("end_quiz", async ({quizId}) => {
         io.emit("end_quiz", { quizId });
 
-        if (players[quizId]) delete players[quizId];
+        if (players[quizId]) {
+            // Sort players by score
+            const sortedPlayers = Object.entries(players[quizId]).map(([playerName, playerData]) => {
+                return {
+                    playerName,
+                    userId: playerData.userId,
+                    score: scores[quizId][playerName] || 0 // Get score from scores object
+                };
+            }).sort((a, b) => b.score - a.score);
+            console.log(sortedPlayers);
+
+            // Award points based on place
+            const numPlayers = sortedPlayers.length; // 1st, 2nd, 3rd place points
+            for (let i = 0; i < sortedPlayers.length; i++) {
+                const { playerName, userId, score } = sortedPlayers[i]; // ✅ Fix applied
+                const point = numPlayers - i; // Default to 1 point if not in top 3
+
+                if (userId) {
+                    try {
+                        await User.findByIdAndUpdate(userId, { $inc: { points: point } });
+                        console.log(`Updated user ${userId} with ${point} points.`);
+                    } catch (error) {
+                        console.error("Error updating user points:", error);
+                    }
+                }
+            }
+
+            delete players[quizId];
+        }
         if (scores[quizId]) delete scores[quizId];
 
         console.log(`Quiz ${quizId} ended. Players and scores removed.`);
-        
         io.emit("update_players", { quizId, players: {} });
     });
 

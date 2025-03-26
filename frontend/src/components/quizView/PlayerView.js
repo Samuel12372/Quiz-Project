@@ -111,7 +111,12 @@ function PlayerView({ quiz, questions }) {
       // Update the player name in the quiz object or handle it as needed
       localStorage.removeItem("playerName");
       localStorage.setItem("playerName", playerName);
-      socket.emit("join_quiz", { quizId: quiz._id, playerName });
+      const userId = localStorage.getItem("userId"); // Assuming userId is stored in localStorage when logged in
+      if (userId) {
+        socket.emit("join_quiz", { quizId: quiz._id, playerName, userId });
+      } else {
+        socket.emit("join_quiz", { quizId: quiz._id, playerName });
+      }
     } 
   };
 

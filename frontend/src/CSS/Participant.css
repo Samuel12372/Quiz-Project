@@ -51,6 +51,22 @@
     color: #ffffff;
     text-align: center;
 }
+#ExitButton{
+    background-color: rgba(128, 128, 128, 0);
+    border: none;
+    color: white;
+    float: left;
+}
+.exitButtonContainer {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+#ExitButton:hover{
+    background-color: #f1f1f1;
+    color: black;
+}
+
 
 /* PlayerView.js */
 
