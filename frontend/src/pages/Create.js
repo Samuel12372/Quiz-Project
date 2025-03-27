@@ -1,6 +1,6 @@
-import { Button, Card, Dropdown, Space, Menu, Radio, Flex } from "antd";
+import { Button, Card, Dropdown, Space, Menu, Radio, Flex, Input } from "antd";
 import { useParams } from "react-router-dom";
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, EditOutlined, SaveOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -10,7 +10,8 @@ import MCQTemplate from "../components/templates/mcqTemplate";
 import TFTemplate from "../components/templates/TFTemplate";
 
 function CreatePage() {
-
+  
+  const { TextArea } = Input;
   const { quizId } = useParams();
   const [slides, setSlides] = useState([{ content: "Choose Template" }]);
   const[currentSlide, setCurrentSlide] = useState(0)
@@ -18,6 +19,9 @@ function CreatePage() {
   const [quiz, setQuiz] = useState({});
   const [questions, setQuestions] = useState([]);
   const [questionSaved, setQuestionSaved] = useState(false);
+  const [isEditingQuiz, setIsEditingQuiz] = useState(false);
+  const [originalQuiz, setOriginalQuiz] = useState({});
+  
 
   useEffect(() => {   
     const fetchQuiz = async () => {
@@ -63,6 +67,40 @@ function CreatePage() {
     const updatedQuestions = questions.filter((_, index) => index !== currentSlide);
     setQuestions(updatedQuestions);
     setSlides(updatedQuestions.map((question) => ({ content: question })));
+  };
+
+  const handleEditToggle = () => {
+    if (!isEditingQuiz) {
+      // Store the current quiz details before entering edit mode
+      setOriginalQuiz({ ...quiz });
+    }
+    setIsEditingQuiz(!isEditingQuiz);
+  };
+  
+  const handleCancelEdit = () => {
+    // Revert quiz details to the original values
+    setQuiz(originalQuiz);
+    setIsEditingQuiz(false); // Exit edit mode
+  };
+
+  const handleSaveQuizDetails = async () => {
+    try {
+      // Send updated quiz details to the backend
+      const updatedQuiz = {
+        ...quiz,
+        title: quiz.title, // Ensure the title is updated
+        description: quiz.description, // Ensure the description is updated
+      };
+  
+      await axios.post(`http://localhost:8080/quiz/${quizId}`, updatedQuiz);
+  
+      // Update the local state with the saved quiz details
+      setQuiz(updatedQuiz);
+      setIsEditingQuiz(false); // Exit edit mode
+      console.log("Quiz details saved successfully!");
+    } catch (error) {
+      console.error("Error saving quiz details:", error);
+    }
   };
 
       
@@ -176,6 +214,52 @@ function CreatePage() {
             </Space>
           </Button>
         </Dropdown>
+        </Card>
+
+        
+        <Card id="editCard">
+          {isEditingQuiz ? (
+            <div>
+              <TextArea
+                autoSize={{ minRows: 1, maxRows: 1 }}
+                value={quiz.title}
+                onChange={(e) => setQuiz({ ...quiz, title: e.target.value })}
+                placeholder="Enter Quiz Title"
+              />
+              <TextArea
+                value={quiz.description}
+                onChange={(e) => setQuiz({ ...quiz, description: e.target.value })}
+                autoSize={{ minRows: 4, maxRows: 6 }}
+                placeholder="Enter Quiz Description"
+              />
+              <Button
+                type="default"
+                icon={<SaveOutlined />}
+                onClick={handleSaveQuizDetails}
+              >
+                Save
+              </Button>
+              <Button
+                type="default"
+                icon={<DeleteOutlined />}
+                onClick={handleCancelEdit}
+              >
+                Cancel
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <h2>{quiz.title}</h2>
+              <p>{quiz.description}</p>
+              <Button
+                type="default"
+                icon={<EditOutlined />}
+                onClick={handleEditToggle}
+              >
+                Edit
+              </Button>
+            </div>
+          )}
         </Card>
         </div>
     </div>

@@ -98,6 +98,18 @@ module.exports = {
         }
     },
 
+    //update quiz details
+    async updateQuizDetails(req, res) {
+        const { id } = req.params;
+        const { title, description } = req.body;
+        try {
+            const updatedQuiz = await QuizModel.findByIdAndUpdate(id, { title, description }, { new: true });
+            res.json(updatedQuiz);
+        } catch (error) {
+            res.status(500).json({ error: "Failed to update quiz details" });
+        }
+    }
+
     
     
 
