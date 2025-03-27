@@ -22,35 +22,46 @@ body {
     max-height: 100vh; /* Adjust the height as needed */
     overflow-y: auto;
     width: 10%;
-    background-color: #f4f4f4;
+    
     padding: 10px;
     height: 100%;
 }
 
 .mainContent {
     width: 60%;
-    background-color: #f4f4f4;
+    
     padding: 10px;
     height: 100%;
 }
 
 .rightsidebar {
     width: 15%;
-    background-color: #f4f4f4;
+    
     padding: 10px;
     height: 100%;
 }
 
 
 #newSlideButton{
-    max-width: 200px;
-    min-width: 100px;
-    background-color: black; 
-    margin: 2px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    width: 180px;
+    background-color:rgba(0, 0, 0, 0.641); 
+    border: 1px solid rgba(255, 255, 255, 0.6); 
+    margin: 5px;
+    padding: 10px;
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    z-index: 10;
 }
+
+#newSlideButton:hover {
+    background-color: #1a237e;
+}
+ 
+/* Cards */
 
 #smallCard{
     width: 90%;
@@ -59,9 +70,25 @@ body {
     padding: 10px;
     margin: 10px;
     border-radius: 10px;
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent */
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 #smallCard * {
     font-size: 0.2em; /* Adjust the font size for all elements inside #smallCard */
+}
+#mainCard{
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent */
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+#toolbarCard{
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent */
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Template CSS */
@@ -84,11 +111,28 @@ body {
 
 #mcqForm .ant-input {
     width: 100vh; /* Ensures the input fills the card size */
+    background-color: rgba(70, 80, 90, 0.8) !important; /* Darker background for input fields */
+    color: white !important; 
+}
+#mcqForm .ant-form-item-label > label {
+    color: white !important; /* White labels */
 }
 
 #SubmitButton, #ClearButton, #DeleteButton {
-    width: 200px;
-    background-color: black; 
-    margin: 2px;
+    width: 220px;
+    background-color:rgba(0, 0, 0, 0.641); 
+    border: 1px solid rgba(255, 255, 255, 0.6); 
+    margin: 5px;
+    padding: 10px;
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    z-index: 10;
 }
 
+#SubmitButton:hover, #ClearButton:hover, #DeleteButton:hover {
+    background-color: #1a237e;
+}

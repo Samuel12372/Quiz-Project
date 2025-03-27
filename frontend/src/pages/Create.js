@@ -165,7 +165,8 @@ function CreatePage() {
 
       {/* Right Sidebar */}
         <div className="rightsidebar">
-        <Card title="Toolbar">
+        <Card id="toolbarCard">
+        <h2>Toolbar</h2>
         <Dropdown overlay={menu}>
           <Button >
             <Space>
