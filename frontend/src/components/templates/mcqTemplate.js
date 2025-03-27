@@ -45,7 +45,8 @@ const MCQTemplate = ({question, onQuestionSaved, onQuestionDeleted}) => {
           label: "Option D",
           value: 'd',
         },
-      ];
+    ];
+    
 
     const onChange = (e) => {
         const selectedLetter = e.target.value; // 'a', 'b', 'c', or 'd'

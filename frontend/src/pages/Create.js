@@ -1,7 +1,8 @@
 import { Button, Card, Dropdown, Space, Menu, Radio, Flex, Input } from "antd";
 import { useParams } from "react-router-dom";
-import { DownOutlined, EditOutlined, SaveOutlined, DeleteOutlined } from '@ant-design/icons';
+import { DownOutlined, EditOutlined, SaveOutlined, DeleteOutlined, LoginOutlined } from '@ant-design/icons';
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import "../CSS/Create.css";
@@ -13,6 +14,7 @@ function CreatePage() {
   
   const { TextArea } = Input;
   const { quizId } = useParams();
+  const navigate = useNavigate();
   const [slides, setSlides] = useState([{ content: "Choose Template" }]);
   const[currentSlide, setCurrentSlide] = useState(0)
   const [selectedQuestionType, setSelectedQuestionType] = useState("Question Type");
@@ -83,6 +85,10 @@ function CreatePage() {
     setIsEditingQuiz(false); // Exit edit mode
   };
 
+  const handleLeaveQuiz = () => {
+    navigate("/"); // Redirect to the home page
+  }
+
   const handleSaveQuizDetails = async () => {
     try {
       // Send updated quiz details to the backend
@@ -138,7 +144,7 @@ function CreatePage() {
 
   //menu for question type
   const menu = (
-    <Menu onClick={handleMenuClick}>
+    <Menu onClick={handleMenuClick} className="custom-dropdown-menu" >
       <Menu.Item key="1">Multiple Choice</Menu.Item>
       <Menu.Item key="2">True/False</Menu.Item>
       <Menu.Item key="3">Picture Question</Menu.Item>
@@ -203,64 +209,76 @@ function CreatePage() {
 
       {/* Right Sidebar */}
         <div className="rightsidebar">
-        <Card id="toolbarCard">
-        <h2>Toolbar</h2>
-        <Dropdown overlay={menu}>
-          <Button >
-            <Space>
-              {/* {selectedQuestionType} */}
-              Question Type
-              <DownOutlined />
-            </Space>
-          </Button>
-        </Dropdown>
-        </Card>
+          <Card id="toolbarCard">
+          <h2>Toolbar</h2>
+          <Dropdown overlay={menu} className="dropdown">
+            <Button className="dropdown-button">
+              <Space>
+                {/* {selectedQuestionType} */}
+                Question Type
+                <DownOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
+          </Card>
 
-        
-        <Card id="editCard">
-          {isEditingQuiz ? (
-            <div>
-              <TextArea
-                autoSize={{ minRows: 1, maxRows: 1 }}
-                value={quiz.title}
-                onChange={(e) => setQuiz({ ...quiz, title: e.target.value })}
-                placeholder="Enter Quiz Title"
-              />
-              <TextArea
-                value={quiz.description}
-                onChange={(e) => setQuiz({ ...quiz, description: e.target.value })}
-                autoSize={{ minRows: 4, maxRows: 6 }}
-                placeholder="Enter Quiz Description"
-              />
-              <Button
-                type="default"
-                icon={<SaveOutlined />}
-                onClick={handleSaveQuizDetails}
-              >
-                Save
-              </Button>
-              <Button
-                type="default"
-                icon={<DeleteOutlined />}
-                onClick={handleCancelEdit}
-              >
-                Cancel
-              </Button>
-            </div>
-          ) : (
-            <div>
-              <h2>{quiz.title}</h2>
-              <p>{quiz.description}</p>
-              <Button
-                type="default"
-                icon={<EditOutlined />}
-                onClick={handleEditToggle}
-              >
-                Edit
-              </Button>
-            </div>
-          )}
-        </Card>
+          
+          <Card id="editCard">
+            {isEditingQuiz ? (
+              <div>
+                <TextArea
+                  id="quizTitle"
+                  autoSize={{ minRows: 1, maxRows: 1 }}
+                  value={quiz.title}
+                  onChange={(e) => setQuiz({ ...quiz, title: e.target.value })}
+                  placeholder="Enter Quiz Title"
+                />
+                <TextArea
+                  id="quizDescription"
+                  value={quiz.description}
+                  onChange={(e) => setQuiz({ ...quiz, description: e.target.value })}
+                  autoSize={{ minRows: 4, maxRows: 6 }}
+                  placeholder="Enter Quiz Description"
+                />
+                <Button
+                  className="saveButton"
+                  type="default"
+                  icon={<SaveOutlined />}
+                  onClick={handleSaveQuizDetails}
+                >
+                  Save
+                </Button>
+                <Button
+                  className="cancelButton"
+                  type="default"
+                  icon={<DeleteOutlined />}
+                  onClick={handleCancelEdit}
+                >
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <div>
+                <h2>{quiz.title}</h2>
+                <p>{quiz.description}</p>
+                <Button
+                  className="editButton"
+                  type="default"
+                  icon={<EditOutlined />}
+                  onClick={handleEditToggle}
+                >
+                  Edit
+                </Button>
+              </div>
+            )}
+          </Card>
+
+          <Card id="leaveCard">
+            <Button className="leaveButton" type="text" icon={<LoginOutlined/>} onClick={handleLeaveQuiz}>
+              Leave Quiz
+            </Button>
+          </Card>
+
         </div>
     </div>
   );
