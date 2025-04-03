@@ -12,6 +12,8 @@ const Login = ({ open, onClose, onSuccess }) => {
     const [formName, setFormName] = useState('Login');
     // State to store error message
     const [errorMessage, setErrorMessage] = useState('');
+    //success message
+    const [successMessage, setSuccessMessage] = useState('');
     // Form instance
     const [form] = Form.useForm();
 
@@ -20,11 +22,16 @@ const Login = ({ open, onClose, onSuccess }) => {
     const toggleFormType = () => {
         setFormName(isRegister ? 'Login' : 'Register');
         setIsRegister(!isRegister);
+        setErrorMessage('');
+        setSuccessMessage('');
     };
 
     // Function to handle modal close
     const handleClose = () => {
         form.resetFields();
+        setErrorMessage('');
+        setSuccessMessage('');
+        setIsRegister(false);
         onClose();
     };
 
@@ -34,9 +41,14 @@ const Login = ({ open, onClose, onSuccess }) => {
             axios.post('http://localhost:8080/user/register', values)
             .then((res) => {
                 console.log(res);
+                setErrorMessage('');
+                setSuccessMessage('Registration successful! You can now log in.');
+                isRegister(false);
             })
             .catch((error) => {
                 console.log(error);
+                setSuccessMessage('');
+                setErrorMessage('Registration failed. Please try again.');
             });
 
         } else {
@@ -111,11 +123,12 @@ const Login = ({ open, onClose, onSuccess }) => {
                     )}
 
                     <Form.Item>
-                        <a onClick={toggleFormType}>
+                        <Button type="text" onClick={toggleFormType}>
                             {isRegister ? 'Already have an account? Login' : "Don't have an account? Register"}
-                        </a>
+                        </Button>
                     </Form.Item>
                     {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+                    {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
                     <Form.Item>
                         <Button type="primary" htmlType="submit" id="LoginButton">
                             {isRegister ? 'Register' : 'Login'}

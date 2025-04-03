@@ -13,6 +13,7 @@ function QuizJoiner() {
   const [name, setName] = useState(''); //stores the name entered by the user
   const [info, setInfo] = useState(false); //stores the information entered by the user
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState(''); //stores the error message if the code is incorrect
   
   const handleJoinClick = async() => {
     console.log(code); 
@@ -31,11 +32,10 @@ function QuizJoiner() {
       })
       .catch((error) => {
         console.log(error);
+        setCode('');
+        setErrorMessage("Invalid Code"); //set error message if code is incorrect
       }); 
     }
-
-    //if code is incorrect, then show an error message
-
   };
 
   
@@ -44,19 +44,20 @@ function QuizJoiner() {
       <Card  id="joinCard">
         <Input 
           type="text" 
-          placeholder="Enter Code" 
+          placeholder={errorMessage || "Enter Quiz Code"}
           id = "codeInput"
           value ={code} 
-          onChange={(e) => setCode(e.target.value)}
+          onChange={(e) => {
+            setCode(e.target.value);
+            setErrorMessage(""); // Clear error message when user starts typing
+          }}
+          style={{
+            borderColor: errorMessage ? "red" : undefined, // Highlight border in red if there's an error
+          }}
+          className={errorMessage ? "error-placeholder" : ""}
         />
         <Button onClick={handleJoinClick} type ="primary" id = "joinButton">Join Quiz</Button>
-        {/* <Input 
-          type="text" 
-          placeholder="Enter Name" 
-          id = "nameInput"
-          value ={name} 
-          onChange={(e) => setName(e.target.value)}
-        /> */}
+         {/*display error message if code is incorrect*/}
       </Card>
     </div>
   );

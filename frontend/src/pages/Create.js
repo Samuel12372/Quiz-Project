@@ -147,9 +147,8 @@ function CreatePage() {
     <Menu onClick={handleMenuClick} className="custom-dropdown-menu" >
       <Menu.Item key="1">Multiple Choice</Menu.Item>
       <Menu.Item key="2">True/False</Menu.Item>
-      <Menu.Item key="3">Picture Question</Menu.Item>
-      <Menu.Item key="4">Number Questions</Menu.Item>
-      <Menu.Item key="5">Letter Question</Menu.Item>
+      <Menu.Item key="3">Number Questions</Menu.Item>
+
     </Menu>
   );
   
@@ -170,12 +169,8 @@ function CreatePage() {
                   onQuestionSaved={() => setQuestionSaved(prev => !prev)}
                   onQuestionDeleted={handleQuestionDeleted} 
                 />;
-      case "Picture Question":
-        return <div>Picture Question Template</div>;
-      case "Number Questions":
+      case "NQ":
         return <div>Number Question Template</div>;
-      case "Letter Question":
-        return <div>Letter Question Template</div>;
       default:
         return <div>Choose a Template</div>;
     }

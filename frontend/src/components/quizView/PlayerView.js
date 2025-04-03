@@ -173,12 +173,13 @@ function PlayerView({ quiz, questions }) {
 
   return (
     <div>
-      {!quizEnded && <Button onClick={handleLeaveClick} type="primary" id="LeaveButton">Leave Quiz</Button>}
+      {!quizEnded && <Button onClick={handleLeaveClick} type="primary" id="leaveButton">Leave Quiz</Button>}
       <h1>{quiz.title}</h1>
       {quizEnded ? ( // Check if the quiz has ended
       <div className="quiz-ended">
         
-        <Card title="Final Results">
+        <Card  id="results-card">
+          <h2>Final Results</h2>
         {scores.map((player, index) => (
           <div key={index} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
             <span
@@ -197,7 +198,7 @@ function PlayerView({ quiz, questions }) {
         ))}
         </Card>
 
-        <Button onClick={endQuiz} type="primary">Home</Button>
+        <Button onClick={endQuiz} type="primary" id="homeButton">Home</Button>
       </div>
     ) : isStarted ? (
         isMidQuestion ? (

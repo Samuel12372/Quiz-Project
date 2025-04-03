@@ -49,3 +49,10 @@
 #joinButton:hover {
     background-color: #3949ab;
 }
+#codeInput::placeholder {
+    color: gray; /* Default placeholder color */
+}
+  
+#codeInput.error-placeholder::placeholder {
+    color: rgba(255, 0, 0, 0.63); /* Red placeholder text when there's an error */
+}
