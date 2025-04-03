@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Input, Form } from 'antd';
+import { Button, Modal, Input, Form, Card } from 'antd';
 import { useNavigate, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 
@@ -23,6 +23,9 @@ function PlayerView({ quiz, questions }) {
   const [timeLeft, setTimeLeft] = useTimer(5, () => setIsMidQuestion(false));
   const [selectedOption, setSelectedOption] = useState(null);
   const [answer, setAnswer] = useState("");
+  const [feedbackMessage, setFeedbackMessage] = useState("");
+  const [quizEnded, setQuizEnded] = useState(false);
+  const [scores , setScores] = useState([]);
   
 
 
@@ -61,13 +64,19 @@ function PlayerView({ quiz, questions }) {
     });
 
     socket.on("end_quiz", () => {
+      setQuizEnded(true);
       setIsStarted(false);
-      localStorage.removeItem("playerName");
-      setPlayerName();
-      navigate("/");
+      
+      // localStorage.removeItem("playerName");
+      // setPlayerName();
+      // navigate("/");
     });
+
     
-    socket.on()
+    socket.on("final_scores", ({ quizId, scores }) => {
+      console.log("Final scores received:", scores);
+      setScores(scores);
+    });
 
     return () => {
       socket.off("next_question");
@@ -140,33 +149,72 @@ function PlayerView({ quiz, questions }) {
     }
   };
 
+
+
   const onAnswerSelected = (option) => {
     console.log("Selected option:", option);
     socket.emit("submit_answer", { quizId: quiz._id, playerName, option });
     setSelectedOption(option);
+    if (option === currentQuestion.correctAnswer) {
+      setFeedbackMessage("Correct! 🎉");
+    } else {
+      setFeedbackMessage("Wrong! ❌");
+    }
   };
 
+  const endQuiz = () => {
+    setQuizEnded(false);
+    setIsStarted(false);
+    localStorage.removeItem("playerName");
+    setPlayerName();
+    navigate("/");
+  }
 
 
   return (
     <div>
-      <Button onClick={handleLeaveClick} type="primary" id="LeaveButton">Leave Quiz</Button>
+      {!quizEnded && <Button onClick={handleLeaveClick} type="primary" id="LeaveButton">Leave Quiz</Button>}
       <h1>{quiz.title}</h1>
-      {isStarted ? (
+      {quizEnded ? ( // Check if the quiz has ended
+      <div className="quiz-ended">
+        
+        <Card title="Final Results">
+        {scores.map((player, index) => (
+          <div key={index} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+            <span
+              style={{
+                fontWeight: "bold",
+                fontSize: "18px",
+                color: index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : "black",
+                marginRight: "10px",
+              }}
+            >
+              {index + 1}.
+            </span>
+            <span style={{ flex: 1 }}>{player.playerName}</span>
+            <span style={{ fontWeight: "bold", color: "#4caf50" }}>{player.score} pts</span>
+          </div>
+        ))}
+        </Card>
+
+        <Button onClick={endQuiz} type="primary">Home</Button>
+      </div>
+    ) : isStarted ? (
         isMidQuestion ? (
           <div className="quiz-mid-question">
 
             {!selectedOption && renderQuestionComponent(currentQuestion)}
 
             <p>Time left: {timeLeft} seconds</p>  
-            {selectedOption && <p>Option selected: {selectedOption}</p>}        
         
           </div>
         ) : (
           <div className="quiz-started-participant">
           
-            
-            <h2>Answer: {answer}</h2>
+            <h2>{feedbackMessage}</h2>       
+            {selectedOption && <h2> You Selected: {selectedOption}</h2>}
+            {answer && <h2>Answer: {answer}</h2>}
+            {!answer && <h2>Loading Question...</h2>}
         
           </div>
         )

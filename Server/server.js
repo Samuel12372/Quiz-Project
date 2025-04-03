@@ -44,6 +44,9 @@ io.on("connection", (socket) => {
         if (!players[quizId]) {
             players[quizId] = {};
         }
+        if (!scores[quizId]) {
+            scores[quizId] = {};
+        }
 
         players[quizId][playerName] = { score: 0, userId: userId || null }; // Initialize player with a score of 0
         io.emit("update_players", { quizId, players: players[quizId] });
@@ -87,6 +90,8 @@ io.on("connection", (socket) => {
                 };
             }).sort((a, b) => b.score - a.score);
             console.log(sortedPlayers);
+
+            io.emit("final_scores", { quizId, scores: sortedPlayers });
 
             // Award points based on place
             const numPlayers = sortedPlayers.length; // 1st, 2nd, 3rd place points

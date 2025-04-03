@@ -1,7 +1,8 @@
 
 
 body {
-    
+    margin: 0;
+    padding: 0;
 }
 
 .container {
@@ -11,34 +12,99 @@ body {
     align-items: flex-start;
     height: 100%;
     width: 100%;
-    gap: 10px; /* Optional: Adds spacing between elements */
+    gap: 10px;
 }
 
 .sidebar, .rightsidebar, .mainContent {
-    flex-grow: 1; /* Ensures proper width distribution */
+    flex-grow: 1;
 }
 
 .sidebar {
-    max-height: 100%; /* Adjust the height as needed */
-    overflow-y: auto;
-    width: 10%;
-    
+    max-height: 100%;
+    overflow-y: scroll;
+    width: 15%;
     padding: 10px;
     height: 100%;
 }
 
 .mainContent {
     width: 60%;
-    
     padding: 10px;
     height: 100%;
 }
 
 .rightsidebar {
-    width: 15%;
-    
+    width: 20%;
     padding: 10px;
     height: 100%;
+}
+
+@media screen and (max-width: 1024px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .sidebar, .rightsidebar {
+        width: 90%;
+        height: auto;
+    }
+    
+    .mainContent {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .sidebar, .rightsidebar {
+        width: 100%;
+        height: auto;
+    }
+    
+    .mainContent {
+        width: 100%;
+    }
+    
+    #newSlideButton, .dropdown-button, .leaveButton {
+        width: 100%;
+    }
+    
+    #smallCard {
+        width: 100%;
+        height: auto;
+    }
+    
+    #mcqForm .ant-input {
+        width: 100%;
+        max-width: 100%;
+        min-width: auto;
+        box-sizing: border-box;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .sidebar, .rightsidebar {
+        width: 100%;
+    }
+    
+    .mainContent {
+        width: 100%;
+    }
+    
+    .optionContainer, .questionContainer {
+        flex-direction: column;
+    }
+    
+    #mcqForm .ant-input {
+        width: 100%;
+        max-width: 100%;
+        min-width: auto;
+        box-sizing: border-box;
+    }
 }
 
 
@@ -164,6 +230,8 @@ body {
     background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent */
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    box-sizing: border-box; 
 }
 
 #toolbarCard{
@@ -233,15 +301,21 @@ body {
 
 
 /* Input Fields */
+
+
 #mcqForm .ant-input {
-    width: 100vh; /* Ensure the input fills the container */
+    width: 100% !important; /* Override any conflicting styles */
+    max-width: 100%;
+    min-width: 100%;
+    box-sizing: border-box; /* Ensures padding/border don't reduce width */
     background-color: rgba(70, 80, 90, 0.8); /* Darker background for input fields */
     color: white; /* White text for better contrast */
     border: 1px solid rgba(255, 255, 255, 0.6); /* Light border */
-    border-radius: 8px; /* Rounded corners */
-    padding: 10px; /* Add padding for better spacing */
+    border-radius: 8px;
     height: 30px;
+    padding: 10px;
 }
+
 
 #mcqForm .ant-input::placeholder {
     color: rgba(255, 255, 255, 0.6); 
@@ -297,3 +371,5 @@ body {
     background-color: #ffffff;
     color: #40a9ff; /* Ensure text remains white */
 }
+
+

@@ -8,6 +8,7 @@ import QuizJoiner from './components/QuizJoiner';
 import Navbar from './components/Navbar';
 import Create from './pages/Create';
 import Title from './components/Title';
+import BinaryRain from './components/BinaryRain';
 
 const App = () => {
   const location = useLocation();
@@ -16,6 +17,7 @@ const App = () => {
 
   return (
     <>
+      <BinaryRain />  
       {showNavbar && <Navbar />}
       {showTitle && <Title />}
       <Routes>

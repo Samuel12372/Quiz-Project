@@ -96,21 +96,21 @@ const MCQTemplate = ({question, onQuestionSaved, onQuestionDeleted}) => {
                     <Form.Item label="Question:" name="question" rules={[{ required: true, message: "Please enter the question" }]}>
                         <Space.Compact>
                             <Form.Item name="question" noStyle> 
-                                <Input placeholder="Type Question Here" />
+                                <Input placeholder="Type Question Here"  />
                             </Form.Item>
                             <Button type="primary">Upload Image</Button>
                         </Space.Compact>
                     </Form.Item>
                 </div>
                 <div className="optionContainer">
-                    <Form.Item label="Option A:" name="a" rules={[{ required: true, message: "At least 3 options required" }]}>
-                        <Space.Compact>
-                            <Form.Item name="a" noStyle> 
-                                <Input placeholder="Option A" />
-                            </Form.Item>
-                            <Button type="primary">Upload Image</Button>
-                        </Space.Compact>
-                    </Form.Item>
+                <Form.Item label="Option A:" name="a" rules={[{ required: true, message: "At least 3 options required" }]}>
+                    <Flex justify="space-between">
+                        <Form.Item name="a" noStyle> 
+                            <Input placeholder="Option A" />
+                        </Form.Item>
+                        <Button type="primary">Upload Image</Button>
+                    </Flex>
+                </Form.Item>
                 </div>
                 <div className="optionContainer">
                     <Form.Item label="Option B:" name="b" rules={[{ required: true, message: "At least 3 options required" }]}>
