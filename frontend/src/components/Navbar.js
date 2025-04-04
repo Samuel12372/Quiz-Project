@@ -8,6 +8,7 @@ import ManageModal from './ManageModal';
 import Leaderboard from './Leaderboard';
 
 
+
 const Navbar = () => {
     
     const [isLoggedIn, setIsLoggedIn] = useState(false);

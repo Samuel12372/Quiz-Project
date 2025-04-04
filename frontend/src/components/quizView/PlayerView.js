@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal, Input, Form, Card } from 'antd';
 import { useNavigate, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
+import BASE_URL from "../../context/quizContext";
 
 import useTimer from "../../hooks/useTimer";
 import MCQ from '../MCQ'; // Import the MCQ component
 import TrueFalse from '../TF'; // Import the TrueFalse component
 import '../../CSS/Participant.css';
 
-const socket = io("http://localhost:8080");
+const socket = io(`${BASE_URL}`);
 
 function PlayerView({ quiz, questions }) {
 

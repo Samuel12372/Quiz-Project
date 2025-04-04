@@ -4,6 +4,7 @@ import { DownOutlined, EditOutlined, SaveOutlined, DeleteOutlined, LoginOutlined
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import BASE_URL from "../context/quizContext";
 
 import "../CSS/Create.css";
 
@@ -23,11 +24,12 @@ function CreatePage() {
   const [questionSaved, setQuestionSaved] = useState(false);
   const [isEditingQuiz, setIsEditingQuiz] = useState(false);
   const [originalQuiz, setOriginalQuiz] = useState({});
+
   
 
   useEffect(() => {   
     const fetchQuiz = async () => {
-      await axios.get(`http://localhost:8080/quiz/${quizId}`)
+      await axios.get(`${BASE_URL}/quiz/${quizId}`)
       .then((res) => {
         //console.log(res.data.questions);
         if (!res.data) {
@@ -98,7 +100,7 @@ function CreatePage() {
         description: quiz.description, // Ensure the description is updated
       };
   
-      await axios.post(`http://localhost:8080/quiz/${quizId}`, updatedQuiz);
+      await axios.post(`${BASE_URL}/quiz/${quizId}`, updatedQuiz);
   
       // Update the local state with the saved quiz details
       setQuiz(updatedQuiz);
@@ -147,7 +149,7 @@ function CreatePage() {
     <Menu onClick={handleMenuClick} className="custom-dropdown-menu" >
       <Menu.Item key="1">Multiple Choice</Menu.Item>
       <Menu.Item key="2">True/False</Menu.Item>
-      <Menu.Item key="3">Number Questions</Menu.Item>
+      {/* <Menu.Item key="3">Number Questions</Menu.Item> */}
 
     </Menu>
   );
@@ -169,8 +171,8 @@ function CreatePage() {
                   onQuestionSaved={() => setQuestionSaved(prev => !prev)}
                   onQuestionDeleted={handleQuestionDeleted} 
                 />;
-      case "NQ":
-        return <div>Number Question Template</div>;
+      case "Number Questions":
+        return <div>Coming Soon</div>;
       default:
         return <div>Choose a Template</div>;
     }
@@ -272,8 +274,16 @@ function CreatePage() {
             <Button className="leaveButton" type="text" icon={<LoginOutlined/>} onClick={handleLeaveQuiz}>
               Leave Quiz
             </Button>
+            
+            <p>
+              Use the left sidebar to navigate between slides or create new ones. 
+              In the main content area, you can edit the selected question based on its type.
+              Make sure to save the question after editing. 
+              Use the toolbar on the right to change the question type or edit quiz details.
+            </p>
           </Card>
 
+          
         </div>
     </div>
   );

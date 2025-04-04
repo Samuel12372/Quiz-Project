@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../CSS/Modals.css';
+import BASE_URL from "../context/quizContext";
 
 const CreateModal = ({ open, onClose }) => {
 
@@ -12,7 +13,7 @@ const CreateModal = ({ open, onClose }) => {
 
     const handleFormSubmit = async (values) => {
         
-        await axios.post('http://localhost:8080/quiz/create', values)
+        await axios.post(`${BASE_URL}/quiz/create`, values)
         .then((res) => {
             //console.log(res);
             const quizzesId = res.data._id;
@@ -37,7 +38,7 @@ const CreateModal = ({ open, onClose }) => {
 
     const addQuizId = async(userId, quizzesId) => {
        
-       await axios.post(`http://localhost:8080/user/addQuizId/${userId}`, {quizzesId})
+       await axios.post(`${BASE_URL}/user/addQuizId/${userId}`, {quizzesId})
         .then((res) => {
             console.log(res);
         })

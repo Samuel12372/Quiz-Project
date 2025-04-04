@@ -2,6 +2,7 @@ import { Modal, Form, Input, Button } from "antd";
 import { useState } from "react";
 import axios from 'axios';
 import '../CSS/Navbar.css';
+import BASE_URL from "../context/quizContext.js";
 
 
 const Login = ({ open, onClose, onSuccess }) => {
@@ -38,7 +39,7 @@ const Login = ({ open, onClose, onSuccess }) => {
     // Function to handle form submission
     const handleFormSubmit = (values) => {
         if (isRegister) {
-            axios.post('http://localhost:8080/user/register', values)
+            axios.post(`${BASE_URL}/user/register`, values)
             .then((res) => {
                 console.log(res);
                 setErrorMessage('');
@@ -52,7 +53,7 @@ const Login = ({ open, onClose, onSuccess }) => {
             });
 
         } else {
-            axios.post('http://localhost:8080/user/login', values)
+            axios.post(`${BASE_URL}/user/login`, values)
             .then((res) => {
                 //console.log(res);
                 if (res.status === 200) {

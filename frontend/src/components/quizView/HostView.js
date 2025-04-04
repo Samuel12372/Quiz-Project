@@ -5,14 +5,15 @@ import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import {CloseCircleOutlined} from '@ant-design/icons';
 import '../../CSS/Participant.css';
+import BASE_URL from "../../context/quizContext";
 
 
-const socket = io("http://localhost:8080");
+const socket = io(`${BASE_URL}`);
 
 
 
 function HostView({ quiz, questions, quizCode }) {
-  const quizJoinLink = `http://localhost:3000/join/${quiz.id}`;
+  const quizJoinLink = `${BASE_URL}/join/${quiz.id}`;
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
   const [isMidQuestion, setIsMidQuestion] = useState(false);

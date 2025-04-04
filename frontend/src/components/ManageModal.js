@@ -3,6 +3,7 @@ import { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../CSS/Modals.css';
+import BASE_URL from "../context/quizContext";
 
 
 const ManageModal = ({open, onClose}) => {
@@ -14,7 +15,7 @@ const ManageModal = ({open, onClose}) => {
     useEffect(() => {
         const userId = localStorage.getItem('userId')
         //console.log(userId);
-        axios.post(`http://localhost:8080/user/getQuizzes/${userId}`)
+        axios.post(`${BASE_URL}/user/getQuizzes/${userId}`)
         .then((res) => {
             //console.log(res.data.quizzesId);
             
@@ -27,7 +28,7 @@ const ManageModal = ({open, onClose}) => {
 
     //get multiple quizzes
     const getQuizzes = async (ids) => {
-        await axios.post(`http://localhost:8080/quizzes/multiple`, {ids})
+        await axios.post(`${BASE_URL}/quizzes/multiple`, {ids})
         .then((res) => {
             //console.log(res.data);
             setQuizzes(res.data);
@@ -45,7 +46,7 @@ const ManageModal = ({open, onClose}) => {
 
     //handle delete quiz button
     const handleDelete = async (quizId) => {
-        await axios.delete(`http://localhost:8080/quiz/delete/${quizId}`)
+        await axios.delete(`${BASE_URL}/quiz/delete/${quizId}`)
         .then((res) => {
             console.log(res);
             const userId = localStorage.getItem('userId');
@@ -58,7 +59,7 @@ const ManageModal = ({open, onClose}) => {
 
     //remove quiz id from user
     const removeQuizId = async (userId, quizId) => {
-        await axios.post(`http://localhost:8080/user/removeQuizId/${userId}`, {quizId})
+        await axios.post(`${BASE_URL}/user/removeQuizId/${userId}`, {quizId})
         .then((res) => {
             console.log(res);
             setQuizzes(quizzes.filter(quiz => quiz._id !== quizId));
@@ -77,7 +78,7 @@ const ManageModal = ({open, onClose}) => {
         const quizCode = Math.random().toString(36).substring(2, 8).toUpperCase(); 
         console.log(quizCode + quizId);
         // Store hosted quiz data in the backend
-        await axios.post(`http://localhost:8080/quiz/host`, {
+        await axios.post(`${BASE_URL}/quiz/host`, {
             userId,
             quizId,
             quizCode

@@ -3,7 +3,7 @@ import { Form, Radio, Input, Button, Flex, Space } from 'antd';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import '../../CSS/Create.css';
-
+import BASE_URL from "../../context/quizContext.js";
 
 const TFTemplate = ({question, onQuestionDeleted, onQuestionSaved }) => {
 
@@ -43,7 +43,7 @@ const TFTemplate = ({question, onQuestionDeleted, onQuestionSaved }) => {
                 correctAnswer: value,
                 questionType: "T/F"
             };
-            await axios.post(`http://localhost:8080/${quizId}/question`, questionData);
+            await axios.post(`${BASE_URL}/${quizId}/question`, questionData);
             //console.log("Question saved:", questionData);
             onQuestionSaved();
         } catch (error) {
@@ -53,7 +53,7 @@ const TFTemplate = ({question, onQuestionDeleted, onQuestionSaved }) => {
 
     const handleDelete = async() => {
         try {
-            await axios.delete(`http://localhost:8080/${quizId}/question/${question._id}`);
+            await axios.delete(`${BASE_URL}/${quizId}/question/${question._id}`);
             //console.log("Question deleted:", question.id);
             onQuestionDeleted();
         } catch (error) {
@@ -65,13 +65,10 @@ const TFTemplate = ({question, onQuestionDeleted, onQuestionSaved }) => {
         <div className="TrueFalseContainer">
             <Form id="mcqForm" form={form}>
                 <div className="questionContainer">
-                <Form.Item label="Question:" name="question" rules={[{ required: true, message: "Please enter the question" }]}>
-                        <Space.Compact>
-                            <Form.Item name="question" noStyle> 
-                                <Input placeholder="Type Question Here" />
-                            </Form.Item>
-                            <Button type="primary">Upload Image</Button>
-                        </Space.Compact>
+                    <Form.Item label="Question:" name="question" rules={[{ required: true, message: "Please enter the question" }]}> 
+                        <Form.Item name="question" noStyle> 
+                            <Input placeholder="Type Question Here" />
+                        </Form.Item>
                     </Form.Item>
                 </div>
                 

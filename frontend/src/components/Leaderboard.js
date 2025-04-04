@@ -1,6 +1,7 @@
 import { Modal, List } from "antd";
 import { useState, useEffect,  } from "react";
 import axios from "axios";
+import BASE_URL from "../context/quizContext";
 
 const Leaderboard = ({open, onClose}) => {
 
@@ -10,7 +11,7 @@ const [leaderboardData, setLeaderboardData] = useState([]);
         //fetch leaderboard data
         const fetchLeaderboard = async () => {
             try {
-                await axios.get('http://localhost:8080/user/getAllPoints')
+                await axios.get(`${BASE_URL}/user/getAllPoints`)
                 .then((res) => {
                 
                     const sortedData = res.data.sort((a, b) => b.points - a.points);

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import '../CSS/QuizJoiner.css';
 import { io } from "socket.io-client";
+import BASE_URL from '../context/quizContext';
 
 const socket = io("http://localhost:8080");
 
@@ -20,7 +21,7 @@ function QuizJoiner() {
     console.log(name);
     if(code){
       setInfo(true);
-      await axios.post(`http://localhost:8080/quiz/join`, {code, name})
+      await axios.post(`${BASE_URL}/quiz/join`, {code, name})
       .then((res) => {
         //console.log(res.data);
         const quizId = res.data.quizId;

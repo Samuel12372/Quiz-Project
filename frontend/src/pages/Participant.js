@@ -2,12 +2,13 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
+import BASE_URL from "../context/quizContext";
 
 import HostView from "../components/quizView/HostView";
 import PlayerView from "../components/quizView/PlayerView";
 import "../CSS/Participant.css";
 
-const socket = io("http://localhost:8080");
+const socket = io(`${BASE_URL}`);
 
 function Participant() {
   const { quizId } = useParams();
@@ -26,7 +27,7 @@ function Participant() {
   }, [quizId]);
   
   const fetchData = async () => {
-    await axios.get(`http://localhost:8080/quiz/${quizId}`)
+    await axios.get(`${BASE_URL}/quiz/${quizId}`)
       .then((response) => {
         setQuiz(response.data);
         setQuestions(response.data.questions);
@@ -39,7 +40,7 @@ function Participant() {
 
   const checkHost = async () => {
     const userId = localStorage.getItem("userId");
-    await axios.post(`http://localhost:8080/user/host`, { userId, quizId })  
+    await axios.post(`${BASE_URL}/user/host`, { userId, quizId })  
     .then((res) => {
       //console.log(res.data);
       if (res.data.isHost) {
