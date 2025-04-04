@@ -69,11 +69,12 @@ io.on("connection", (socket) => {
         io.emit("quiz_started", quizId);
     });
 
-    socket.on("next_question", ({ quizId, newIndex, correctAnswer }) => {
+    socket.on("next_question", ({ quizId, newIndex, correctAnswer, time }) => {
         console.log(newIndex);
         console.log(correctAnswer);
+        console.log(time);
         answer = correctAnswer;
-        io.emit("next_question", {newIndex});
+        io.emit("next_question", {newIndex, time});
     });
 
 
@@ -177,6 +178,8 @@ io.on("connection", (socket) => {
             delete answerSubmissions[quizId];
         }
     });
+
+   
 
     socket.on("disconnect", () => {
         

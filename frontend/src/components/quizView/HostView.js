@@ -24,6 +24,7 @@ function HostView({ quiz, questions, quizCode }) {
   const [players, setPlayers] = useState([]); 
   const [fastestPlayers, setFastestPlayers] = useState([]);
   const [showLeaderboard, setShowLeaderboard] = useState(true); 
+  const [adjustableTime, setAdjustableTime] = useState(5);
   
 
   useEffect(() => {
@@ -74,6 +75,10 @@ function HostView({ quiz, questions, quizCode }) {
     socket.emit("request_players", quiz._id);
   }, [quiz._id]);
   
+  const handleTimeChange = (amount) => {
+    setAdjustableTime((prevTime) => Math.max(1, prevTime + amount)); // Ensure time doesn't go below 1
+  };
+
   //change this logic 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
@@ -83,12 +88,12 @@ function HostView({ quiz, questions, quizCode }) {
       // Emit the next question first
       console.log("Sending next question:", questions[newIndex]);
       console.log("Correct answer:", questions[newIndex].correctAnswer);
-      socket.emit("next_question", { quizId: quiz._id, newIndex, correctAnswer: questions[newIndex].correctAnswer });
+      socket.emit("next_question", { quizId: quiz._id, newIndex, correctAnswer: questions[newIndex].correctAnswer, time: adjustableTime });
   
       // Update the state for the new question
       setCurrentQuestionIndex(newIndex);
       setIsMidQuestion(true); // Start the timer phase
-      setTimeLeft(5); // Reset timer
+      setTimeLeft(adjustableTime); // Reset timer
     } else {
       socket.emit("end_quiz", { quizId: quiz._id });
       setPlayers([]);
@@ -142,11 +147,23 @@ function HostView({ quiz, questions, quizCode }) {
             <Button onClick={handleNextQuestion} type="primary" id="NextButton"><h2>Continue</h2></Button>
             <h1>{quiz.title}</h1>
 
-            <h2>Question {currentQuestionIndex + 2} of {questions.length}</h2>
+            <h2>
+              {currentQuestionIndex + 1 === questions.length
+                ? "Quiz Completed"
+                : `Question ${currentQuestionIndex + 2} of ${questions.length}`}
+            </h2>
             
-            <p>Current Question: {questions[currentQuestionIndex + 1]?.questionText}</p>
+            <p>
+              {currentQuestionIndex + 1 === questions.length
+                ? null
+                : `Current Question: ${questions[currentQuestionIndex + 1]?.questionText}`}
+            </p>
 
-
+            <div className="time-adjustment">
+              <Button id="plusButton" onClick={() => handleTimeChange(-1)}>-</Button>
+              <p>Time: {adjustableTime} seconds</p>
+              <Button id="minusButton" onClick={() => handleTimeChange(1)}>+</Button>
+            </div>
           
             {/* Merged Leaderboard and Fastest Players Card */}
             <Card className="leaderboardCard"> 
@@ -164,10 +181,10 @@ function HostView({ quiz, questions, quizCode }) {
                   <List
                     className="leaderboardList"
                     dataSource={players.sort((a, b) => b.score - a.score)}
-                    renderItem={(player) => (
+                    renderItem={(player, index) => (
                       <List.Item>
                         <List.Item.Meta
-                          title={<span style={{ color: "white" }}>{player.name}</span>}
+                          title={<span style={{ color: "white" }}>{index+1}. {player.name}</span>}
                           description={<span style={{ color: "white" }}>Score: {player.score}</span>}
                         />
                       </List.Item>
@@ -180,9 +197,9 @@ function HostView({ quiz, questions, quizCode }) {
                 fastestPlayers.length > 0 ? (
                   <List
                     dataSource={fastestPlayers}
-                    renderItem={(player) => (
+                    renderItem={(player, index) => (
                       <List.Item>
-                        <List.Item.Meta title={<span style={{ color: "white" }}>{player}</span>}/>
+                        <List.Item.Meta title={<span style={{ color: "white" }}>{index+1}. {player}</span>}/>
                       </List.Item>
                     )}
                   />

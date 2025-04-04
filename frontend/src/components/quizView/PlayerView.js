@@ -48,14 +48,14 @@ function PlayerView({ quiz, questions }) {
   // Listen for the next question event from the host
   useEffect(() => {
 
-    socket.on("next_question", ({ newIndex }) => {
+    socket.on("next_question", ({ newIndex, time }) => {
       setIsStarted(true);
       console.log("questions[newIndex]:", questions[newIndex])
       //console.log(questions[newIndex].answer);
       setSelectedOption(null);
       setCurrentQuestion(questions[newIndex]);
       setAnswer(questions[newIndex].correctAnswer);
-      setTimeLeft(5);
+      setTimeLeft(time);
       setIsMidQuestion(true);
     });
 
@@ -79,10 +79,12 @@ function PlayerView({ quiz, questions }) {
       setScores(scores);
     });
 
+
     return () => {
       socket.off("next_question");
       socket.off("quiz_started");
       socket.off("end_quiz");
+      socket.off("final_scores");
     };
   }, [socket, questions]);
 
