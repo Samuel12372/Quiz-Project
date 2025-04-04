@@ -1,3 +1,3 @@
-const BASE_URL = "http://localhost:8080"; // Replace with your backend URL
+const BASE_URL = "https://quiz-project-backend.onrender.com"; // Replace with your backend URL
 
 export default BASE_URL;
