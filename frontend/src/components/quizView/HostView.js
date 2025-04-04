@@ -8,7 +8,10 @@ import '../../CSS/Participant.css';
 import BASE_URL from "../../context/quizContext";
 
 
-const socket = io(`${BASE_URL}`);
+const socket = io(`${BASE_URL}` , {
+  transports: ["websocket"], // Prevents polling issues
+  withCredentials: true
+});
 
 
 

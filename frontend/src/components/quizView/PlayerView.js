@@ -9,8 +9,10 @@ import MCQ from '../MCQ'; // Import the MCQ component
 import TrueFalse from '../TF'; // Import the TrueFalse component
 import '../../CSS/Participant.css';
 
-const socket = io(`${BASE_URL}`);
-
+const socket = io(`${BASE_URL}` , {
+  transports: ["websocket"], // Prevents polling issues
+  withCredentials: true
+});
 function PlayerView({ quiz, questions }) {
 
   const navigate = useNavigate();
