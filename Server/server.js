@@ -23,7 +23,8 @@ const io = require("socket.io")(server, {
     cors: {
       origin: "https://quiz-project-frontend-dyul.onrender.com",
       methods: ["GET", "POST"]
-    }
+    },
+    transports: ["websocket"]
 });
   
   let players = {};
@@ -188,7 +189,7 @@ io.on("connection", (socket) => {
 
 connectDB();
 
-app.use(cors());
+app.use(cors({ origin: "https://quiz-project-frontend-dyul.onrender.com", credentials: true }));
 app.use(express.json());
 app.use('/', quizzes, users); 
 
