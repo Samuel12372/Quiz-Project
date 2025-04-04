@@ -15,7 +15,7 @@ const users = require('./Routes/User');
 const User = require('./Models/UserModel');
 
 
-const PORT = process.env.PORT;  
+const PORT = process.env.PORT || 8080;  
 const app = express();
 const server = http.createServer(app);
 
