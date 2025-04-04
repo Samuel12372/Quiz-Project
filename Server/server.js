@@ -190,10 +190,8 @@ io.on("connection", (socket) => {
 connectDB();
 
 
-app.use(cors({
-  origin: "https://quiz-project-frontend-dyul.onrender.com",
-  credentials: true
-}));
+
+app.use(cors({ origin: "https://quiz-project-frontend-dyul.onrender.com", credentials: true }));
 app.use(express.json());
 app.use('/', quizzes, users); 
 
