@@ -44,7 +44,7 @@ const Login = ({ open, onClose, onSuccess }) => {
                 console.log(res);
                 setErrorMessage('');
                 setSuccessMessage('Registration successful! You can now log in.');
-                isRegister(false);
+                setIsRegister(false);
             })
             .catch((error) => {
                 console.log(error);

@@ -233,6 +233,7 @@ function PlayerView({ quiz, questions }) {
       
       {/* player name modal */}
       <Modal
+        className="playerNameModal"
         title="Quiz Name"
         visible={isModalVisible}
         onOk={handleOk}       

@@ -1,3 +1,29 @@
+/* General modal scroll behavior */
+.ant-modal {
+    max-height: 90vh; /* Limit modal height to 90% of the viewport height */
+    overflow: hidden; /* Prevent overflow outside the modal */
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-modal-content {
+    display: flex;
+    flex-direction: column;
+    max-height: 100%; /* Ensure content doesn't exceed modal height */
+}
+
+.ant-modal-body {
+    overflow-y: auto; /* Enable vertical scrolling for the modal body */
+    padding: 16px; /* Add padding for better readability */
+    flex: 1; /* Allow the body to take up remaining space */
+}
+
+/* Optional: Ensure modal header and footer remain fixed */
+.ant-modal-header,
+.ant-modal-footer {
+    flex-shrink: 0; /* Prevent shrinking of header and footer */
+}
+
 /* manage modal */
 
 .manageModal .ant-modal-content {
@@ -163,5 +189,77 @@
 /* Error Message */
 .login .ant-form-item-explain {
     color: red !important; /* Red error message */
+}
+
+/* settings modal */
+
+/* Settings Modal Background and Text Color */
+.settingsModal .ant-modal-content {
+    background-color: rgb(51, 66, 81) !important; /* Slate blue background */
+    color: white !important; /* White text */
+}
+
+/* Modal Header (Title) */
+.settingsModal .ant-modal-header {
+    background-color: rgb(51, 66, 81) !important; /* Slate blue background */
+    color: white !important; /* White text */
+    border-bottom: none !important; /* Remove the default border */
+}
+
+/* Modal Title Text Color */
+.settingsModal .ant-modal-title {
+    color: white !important; /* White title text */
+}
+
+/* Switch Label Styling */
+.settingsModal .ant-card {
+    background-color: rgba(70, 80, 90, 0) !important; /* Slightly lighter slate for card */
+    color: white !important; /* White text in card */
+    border: none !important; /* Remove border */
+}
+
+/* Switch Styling */
+.settingsModal .ant-switch-checked {
+    background-color: rgba(50, 50, 50, 1) !important; /* Darker switch when checked */
+}
+
+.settingsModal .ant-switch {
+    background-color: rgba(80, 80, 80, 1) !important; /* Default switch background */
+}
+
+/* Button Styling */
+.settingsModal .ant-btn {
+    background-color: rgba(50, 50, 50, 1) !important; /* Dark buttons */
+    color: white !important; /* White text */
+    border: none;
+}
+
+.settingsModal .ant-btn:hover {
+    background-color: rgba(80, 80, 80, 1) !important; /* Slightly lighter on hover */
+}
+
+
+/* Style for the tabs container */
+.settingsModal .ant-tabs {
+    margin-top: 16px;
+}
+
+/* Style for the tab headers */
+.settingsModal .ant-tabs-tab {
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+}
+
+.settingsModal .ant-tabs-tab:hover {
+    color: #1890ff;
+}
+
+/* Active tab styling */
+.settingsModal .ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #1890ff;
+    font-weight: bold;
 }
 

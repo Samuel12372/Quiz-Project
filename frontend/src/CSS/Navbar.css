@@ -6,7 +6,7 @@
   margin: 20px;
 }
 
-#ManageButton, #CreateButton, #LogoutButton, #LoginButton, #LeaderboardButton {
+#ManageButton, #CreateButton, #LogoutButton, #LoginButton, #LeaderboardButton{
   width: 180px;
   background-color:rgba(0, 0, 0, 0.641); 
   border: 1px solid rgba(255, 255, 255, 0.6); 
@@ -21,7 +21,7 @@
   z-index: 10;
 }
 
-#ManageButton:hover, #CreateButton:hover, #LogoutButton:hover, #LoginButton:hover, #LeaderboardButton:hover {
+#ManageButton:hover, #CreateButton:hover, #LogoutButton:hover, #LoginButton:hover, #LeaderboardButton:hover, #SettingsButton:hover {
   background-color: #1a237e;
 }
 
@@ -36,6 +36,23 @@
   bottom: 70px;
   left: 50%;
   transform: translateX(-50%);
+}
+#SettingsButton{
+  position: absolute;
+  bottom: 70px;
+  left: calc(50% + 110px);
+  transform: translateX(-50%);
+  background-color:rgba(0, 0, 0, 0.641); 
+  border: 1px solid rgba(255, 255, 255, 0.6); 
+  margin: 5px;
+  padding: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  z-index: 10;
 }
 
 /* title css */

@@ -17,14 +17,21 @@ const User = require('./Models/UserModel');
 
 const PORT = process.env.PORT || 8080;  
 const app = express();
+
+app.use(cors());
+app.use(express.json());
+
 const server = http.createServer(app);
+
+//"http://localhost:8080", "https://quiz-project-frontend-dyul.onrender.com", "http://localhost:3000"
 
 const io = require("socket.io")(server, {
     cors: {
       origin: [ "https://quiz-project-frontend-dyul.onrender.com"],
-      methods: ["GET", "POST"]
+      methods: ["GET", "POST"],
+      credentials: true,
+      transports: ["websocket"],
     },
-    transports: ["websocket"]
 });
   
   let players = {};
@@ -191,11 +198,9 @@ connectDB();
 
 
 
-app.use(cors({ origin: "https://quiz-project-frontend-dyul.onrender.com", credentials: true }));
-app.use(express.json());
 app.use('/', quizzes, users); 
 
-
+//https://quiz-project-frontend-dyul.onrender.com
 
 
 server.listen(PORT, () => {

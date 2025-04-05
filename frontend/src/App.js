@@ -9,15 +9,17 @@ import Navbar from './components/Navbar';
 import Create from './pages/Create';
 import Title from './components/Title';
 import BinaryRain from './components/BinaryRain';
+import { useBackground } from './context/BackgroundContext';
 
 const App = () => {
   const location = useLocation();
+  const { isAnimated } = useBackground();
   const showTitle = location.pathname === '/' || location.pathname === '/view';
   const showNavbar = location.pathname === '/' || location.pathname === '/view';
 
   return (
     <>
-      <BinaryRain />  
+      {isAnimated && <BinaryRain />}
       {showNavbar && <Navbar />}
       {showTitle && <Title />}
       <Routes>
