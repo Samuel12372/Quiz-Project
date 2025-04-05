@@ -398,3 +398,20 @@ body {
 }
 
 
+.settingsButton{
+    background-color: rgba(0, 0, 0, 0.6); /* Dark background */
+    color: white; /* White text */
+    border: 1px solid rgba(255, 255, 255, 0.6); /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 5px 15px; /* Add padding */
+    font-size: 14px; /* Adjust font size */
+    transition: all 0.3s ease;
+}
+.settingsButton:hover {
+    background-color: white;
+    color: 40a9ff;
+}
+
+.settingsButton:hover .anticon {
+    color: 40a9ff;
+}

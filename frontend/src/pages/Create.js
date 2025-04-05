@@ -1,12 +1,14 @@
 import { Button, Card, Dropdown, Space, Menu, Radio, Flex, Input } from "antd";
 import { useParams } from "react-router-dom";
-import { DownOutlined, EditOutlined, SaveOutlined, DeleteOutlined, LoginOutlined } from '@ant-design/icons';
+import { DownOutlined, EditOutlined, SaveOutlined, DeleteOutlined, LoginOutlined, SettingOutlined } from '@ant-design/icons';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../context/quizContext";
 
 import "../CSS/Create.css";
+import SettingsModal from "../components/SettingsModal";
+
 
 import MCQTemplate from "../components/templates/mcqTemplate";
 import TFTemplate from "../components/templates/TFTemplate";
@@ -24,6 +26,7 @@ function CreatePage() {
   const [questionSaved, setQuestionSaved] = useState(false);
   const [isEditingQuiz, setIsEditingQuiz] = useState(false);
   const [originalQuiz, setOriginalQuiz] = useState({});
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
   
 
@@ -178,6 +181,15 @@ function CreatePage() {
     }
   };
 
+  //settings button click
+  const handleSettingsClick = () => {
+    setIsSettingsModalOpen(true);
+};
+//close settings modal
+const closeSettingsModal = () => {
+    setIsSettingsModalOpen(false);
+};
+
 
 
 
@@ -208,6 +220,7 @@ function CreatePage() {
         <div className="rightsidebar">
           <Card id="toolbarCard">
           <h2>Toolbar</h2>
+          
           <Dropdown overlay={menu} className="dropdown">
             <Button className="dropdown-button">
               <Space>
@@ -274,6 +287,13 @@ function CreatePage() {
             <Button className="leaveButton" type="text" icon={<LoginOutlined/>} onClick={handleLeaveQuiz}>
               Leave Quiz
             </Button>
+            <Button 
+              onClick={handleSettingsClick} 
+              type="primary" 
+              className="settingsButton" 
+              icon={<SettingOutlined />} 
+            />
+            {isSettingsModalOpen && <SettingsModal open={isSettingsModalOpen} onClose={closeSettingsModal}/>}
             
             <p>
               Use the left sidebar to navigate between slides or create new ones. 
