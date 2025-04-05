@@ -16,7 +16,7 @@ const socket = io(`${BASE_URL}` , {
 
 
 function HostView({ quiz, questions, quizCode }) {
-  const quizJoinLink = `https://quiz-project-frontend-dyul.onrender.com/join/${quiz._id}`;
+  const quizJoinLink = `https://quiz-project-frontend-dyul.onrender.com/view/${quiz._id}`;
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
   const [isMidQuestion, setIsMidQuestion] = useState(false);
