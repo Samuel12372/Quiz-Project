@@ -96,15 +96,15 @@ const Navbar = () => {
                     <Button onClick={handleManageClick} type="primary" id="ManageButton" className="navbar-button">Manage Quizzes</Button>
                     <Button onClick={handleCreateClick} type="primary" id="CreateButton" className="navbar-button">Create Quiz</Button>
                     <Button onClick={handleLogoutClick} type="primary" id="LogoutButton" className="navbar-button">Logout</Button>
-                    <Button onClick={handleLeaderboardClick} type="primary" id="LeaderboardButton" className="navbar-button">Leaderboard</Button>
-                    <Button onClick={handleSettingsClick} type="primary" id="SettingsButton" className="navbar-button" icon={<SettingOutlined />}></Button>
-                    {isCreateModalOpen && <CreateModal open={isCreateModalOpen} onClose={closeCreateModal} />}
-                    {isManageModalopen && <ManageModal open={isManageModalopen} onClose={closeManageModal}/>}
-                    {isLeaderboardModalOpen && <Leaderboard open={isLeaderboardModalOpen} onClose={closeLeaderboardModal}/>}
-                    {isSettingsModalOpen && <SettingsModal open={isSettingsModalOpen} onClose={closeSettingsModal}/>}
 
                 </>
             )}
+            <Button onClick={handleLeaderboardClick} type="primary" id="LeaderboardButton" className="navbar-button">Leaderboard</Button>
+            <Button onClick={handleSettingsClick} type="primary" id="SettingsButton" className="navbar-button" icon={<SettingOutlined />}></Button>
+            {isCreateModalOpen && <CreateModal open={isCreateModalOpen} onClose={closeCreateModal} />}
+            {isManageModalopen && <ManageModal open={isManageModalopen} onClose={closeManageModal}/>}
+            {isLeaderboardModalOpen && <Leaderboard open={isLeaderboardModalOpen} onClose={closeLeaderboardModal}/>}
+            {isSettingsModalOpen && <SettingsModal open={isSettingsModalOpen} onClose={closeSettingsModal}/>}
         </div>
     );
 };

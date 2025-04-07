@@ -1,5 +1,6 @@
-import { Modal, List } from "antd";
+import { Modal, List, Button, Popover, message } from "antd";
 import { useState, useEffect } from "react";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 import BASE_URL from "../context/quizContext";
 
@@ -26,9 +27,28 @@ const Leaderboard = ({ open, onClose }) => {
     fetchLeaderboard();
   }, []);
 
+  const content = (
+    <div>
+      <p>Content</p>
+      <p>Content</p>
+    </div>
+  );
+
   return (
     <div>
       <Modal className="leaderboard" open={open} onCancel={onClose} footer={null}>
+        <Button
+            type="text"
+            icon={<InfoCircleOutlined />}
+            style={{
+              position: "absolute",
+              top: "10px",
+              left: "10px",
+              fontSize: "18px",
+              color: "#1890ff",
+            }}
+            onClick={() => alert("Users must be logged in to see the leaderboard to obtain points for the quiz.")}
+        />
         <h1>Leaderboard</h1>
         <List
           dataSource={leaderboardData}

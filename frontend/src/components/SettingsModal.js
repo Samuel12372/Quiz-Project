@@ -1,4 +1,4 @@
-import {Card, Modal, Button, Switch, Tabs} from 'antd';
+import {Card, Modal, Button, Switch, Tabs, QRCode} from 'antd';
 import { useState, useEffect } from 'react';
 import { useBackground } from '../context/BackgroundContext';
 import '../CSS/Modals.css';
@@ -6,6 +6,9 @@ import '../CSS/Modals.css';
 const { TabPane } = Tabs;
 
 const SettingsModal = ({ open, onClose }) => {
+
+    const JoinLink = `https://quiz-project-frontend-dyul.onrender.com`;
+
     const { isAnimated, setIsAnimated } = useBackground();
 
     const handleToggle = (checked) => {
@@ -32,10 +35,12 @@ const SettingsModal = ({ open, onClose }) => {
                         />
                     </Card>
                 </TabPane>
-                <TabPane tab="About Us" key="2">
+                <TabPane tab="QR Code" key="2">
                     <Card>
-                        <h2>About Us</h2>
-                        
+                        <h2>CodeClash QR Code</h2>
+                        <div className='qrCodeDiv'>
+                            <QRCode value={JoinLink} size={200} className="QR" fgColor="#000000" bgColor="#ffffff" />
+                        </div>
                     </Card>
                 </TabPane>
             </Tabs>

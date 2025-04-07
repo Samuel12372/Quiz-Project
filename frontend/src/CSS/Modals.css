@@ -262,4 +262,12 @@
     color: #1890ff;
     font-weight: bold;
 }
-
+.qrCodeDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(51, 66, 81) !important; /* Slate blue background */
+    color: white !important; /* White text */
+}
