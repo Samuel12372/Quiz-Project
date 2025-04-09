@@ -36,7 +36,7 @@ const io = require("socket.io")(server, {
   
   let players = {};
   let scores = {};
-  let answer = "";
+  const correctAnswers = {};
 
   const answerSubmissions = {}; // Tracks answer submissions for each quiz
 
@@ -82,7 +82,7 @@ io.on("connection", (socket) => {
         console.log(newIndex);
         console.log(correctAnswer);
         console.log(time);
-        answer = correctAnswer;
+        correctAnswers[quizId] = correctAnswer;
         answerSubmissions[quizId] = {};
         io.emit("next_question", {newIndex, time});
     });
@@ -123,6 +123,7 @@ io.on("connection", (socket) => {
             delete players[quizId];
         }
         if (scores[quizId]) delete scores[quizId];
+        delete correctAnswers[quizId];
 
         console.log(`Quiz ${quizId} ended. Players and scores removed.`);
         io.emit("update_players", { quizId, players: {} });
@@ -160,9 +161,10 @@ io.on("connection", (socket) => {
         if (submissionsCount >= playersCount) {
             // Process all answers at once
             let answerOrder = [];
-    
+            
             Object.entries(answerSubmissions[quizId]).forEach(([player, { option, time }]) => {
-                if (option === answer) {
+                const currentAnswer = correctAnswers[quizId];
+                if (option === currentAnswer) {
                     scores[quizId][player] += 10; // Base points
                     answerOrder.push({ playerName: player, time }); // Track speed for bonus
                 }
