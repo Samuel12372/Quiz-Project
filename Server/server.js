@@ -136,14 +136,14 @@ io.on("connection", (socket) => {
     });
 
     socket.on("submit_answer", ({ quizId, playerName, option }) => {
-        if (!quizId || !playerName || !option) return;
+        if (!quizId || !playerName) return;
     
         console.log(`Answer received from ${playerName}: ${option}`);
     
         if (!answerSubmissions[quizId]) {
             answerSubmissions[quizId] = {};
         }
-        
+    
         if (!scores[quizId]) {
             scores[quizId] = {};
         }
@@ -154,14 +154,20 @@ io.on("connection", (socket) => {
         // Store the submission time and option
         answerSubmissions[quizId][playerName] = { option, time: Date.now() };
     
-        // Check if all players have submitted
+        // Check if all players have been accounted for
         const playersCount = Object.keys(players[quizId] || {}).length;
-        const submissionsCount = Object.keys(answerSubmissions[quizId]).length;
     
-        if (submissionsCount >= playersCount) {
+        // Ensure all players are accounted for, even if they didn't submit an answer
+        if (Object.keys(answerSubmissions[quizId]).length === playersCount) {
+            Object.keys(players[quizId]).forEach((player) => {
+                if (!answerSubmissions[quizId][player]) {
+                    answerSubmissions[quizId][player] = { option: null, time: Date.now() };
+                }
+            });
+    
             // Process all answers at once
             let answerOrder = [];
-            
+    
             Object.entries(answerSubmissions[quizId]).forEach(([player, { option, time }]) => {
                 const currentAnswer = correctAnswers[quizId];
                 if (option === currentAnswer) {

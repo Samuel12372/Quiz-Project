@@ -157,15 +157,27 @@ function PlayerView({ quiz, questions }) {
 
 
 
+  useEffect(() => {
+    if (isMidQuestion && timeLeft === 0) {
+      // Timer has ended, submit the selected answer or null
+      const optionToSubmit = selectedOption || null;
+      console.log("Submitting answer after timer ends:", optionToSubmit);
+      socket.emit("submit_answer", { quizId: quiz._id, playerName, option: optionToSubmit });
+  
+      // Provide feedback if no answer was selected
+      if (!selectedOption) {
+        setFeedbackMessage("No answer selected! ❌");
+      }
+  
+      // Reset the selected option for the next question
+      setSelectedOption(null);
+      setIsMidQuestion(false);
+    }
+  }, [timeLeft, isMidQuestion, selectedOption, quiz._id, playerName]);
+  
   const onAnswerSelected = (option) => {
     console.log("Selected option:", option);
-    socket.emit("submit_answer", { quizId: quiz._id, playerName, option });
-    setSelectedOption(option);
-    if (option === currentQuestion.correctAnswer) {
-      setFeedbackMessage("Correct! 🎉");
-    } else {
-      setFeedbackMessage("Wrong! ❌");
-    }
+    setSelectedOption(option); // Store the selected option
   };
 
   const endQuiz = () => {
@@ -235,7 +247,7 @@ function PlayerView({ quiz, questions }) {
       {/* player name modal */}
       <Modal
         className="playerNameModal"
-        title="Quiz Name"
+        title="Player Name"
         visible={isModalVisible}
         onOk={handleOk}       
         closable={false}
