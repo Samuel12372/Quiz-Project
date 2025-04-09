@@ -31,48 +31,45 @@ function HostView({ quiz, questions, quizCode }) {
   
 
   useEffect(() => {
-    socket.on("update_players", ({ quizId, players }) => {
-      
-      // Format player data into an array
+    const handleUpdatePlayers = ({ quizId, players }) => {
       const formattedPlayers = Object.entries(players || {}).map(([name, details]) => ({
-        name: name,
+        name,
         score: details.score || 0
       }));
-
       setPlayers(formattedPlayers);
-      console.log("Updated players state:", formattedPlayers);
-    });
-
-    socket.on("end_quiz", () => {
-      setPlayers([]); // Reset players on quiz end
+    };
+  
+    const handleEndQuiz = () => {
+      setPlayers([]);
       setCurrentQuestionIndex(-1);
       setIsStarted(false);
-    });
-
-    socket.on("update_scores", ({ quizId, scores }) => {
-      console.log("Received updated scores:", scores);
-      // Update the players state with the new scores
-      setPlayers((prevPlayers) =>
-        prevPlayers.map((player) => ({
-          ...player,
-          score: scores[player.name] || player.score,
-        }))
-      );
-    });
-
-    socket.on("fastest_players", ({ quizId, fastestPlayers }) => {
-      console.log("Received fastest players:", fastestPlayers);
+    };
+  
+    const handleUpdateScores = ({ quizId, scores }) => {
+      const updatedPlayers = Object.entries(scores).map(([name, score]) => ({
+        name,
+        score
+      }));
+      setPlayers(updatedPlayers);
+    };
+  
+    const handleFastestPlayers = ({ quizId, fastestPlayers }) => {
       setFastestPlayers(fastestPlayers);
-      
-    });
-    
+    };
+  
+    socket.on("update_players", handleUpdatePlayers);
+    socket.on("end_quiz", handleEndQuiz);
+    socket.on("update_scores", handleUpdateScores);
+    socket.on("fastest_players", handleFastestPlayers);
+  
     return () => {
-      socket.off("update_players");
-      socket.off("end_quiz");
-      socket.off("fastest_players");
-      socket.off("end_quiz");
+      socket.off("update_players", handleUpdatePlayers);
+      socket.off("end_quiz", handleEndQuiz);
+      socket.off("update_scores", handleUpdateScores);
+      socket.off("fastest_players", handleFastestPlayers);
     };
   }, []);
+  
 
   useEffect(() => {
     socket.emit("request_players", quiz._id);
@@ -110,7 +107,7 @@ function HostView({ quiz, questions, quizCode }) {
   const startQuiz = () => {
     setIsStarted(true);
     setFastestPlayers([]);
-    socket.emit("start_quiz", { quizId: quiz._id }); 
+    socket.emit("start_quiz", quiz._id ); 
     console.log(players);
   };
 
@@ -136,37 +133,41 @@ function HostView({ quiz, questions, quizCode }) {
         isMidQuestion ? (
           <div className="quiz-started-host">
             <Button onClick={handleEndClick} type="primary" id="EndButton">End Quiz</Button>
-            <h1>{quiz.title}</h1>
+            <Card className="questionCard">
+              {/* <h1>{quiz.title}</h1> */}
 
-            <p>{questions[currentQuestionIndex]?.questionText}</p>
-            
-            {/* timer */}
-            <p>Time left: {timeLeft} seconds</p>
-
+              <h1>{questions[currentQuestionIndex]?.questionText}</h1>
+              
+              {/* timer */}
+              <h2>Time left: {timeLeft} seconds</h2>
+            </Card>
           </div>
         ) : (
           <div className="quiz-started-host">
-            <Button onClick={handleEndClick} type="primary" id="EndButton"><h2>End Quiz</h2></Button>
-            <Button onClick={handleNextQuestion} type="primary" id="NextButton"><h2>Continue</h2></Button>
-            <h1>{quiz.title}</h1>
+            <div class="inline-buttons-container">
+              <Button onClick={handleEndClick} type="primary" id="EndButton"><h2>End Quiz</h2></Button>
+              <Button onClick={handleNextQuestion} type="primary" id="NextButton"><h2>Continue</h2></Button>
+            </div>
+            {/* <h1>{quiz.title}</h1> */}
 
-            <h2>
+            <h1>
               {currentQuestionIndex + 1 === questions.length
                 ? "Quiz Completed"
                 : `Question ${currentQuestionIndex + 2} of ${questions.length}`}
-            </h2>
-            
-            <p>
-              {currentQuestionIndex + 1 === questions.length
-                ? null
-                : `Current Question: ${questions[currentQuestionIndex + 1]?.questionText}`}
-            </p>
+            </h1>
 
             <div className="time-adjustment">
               <Button id="plusButton" onClick={() => handleTimeChange(-1)}>-</Button>
               <p>Time: {adjustableTime} seconds</p>
               <Button id="minusButton" onClick={() => handleTimeChange(1)}>+</Button>
             </div>
+            
+            {/* <p>
+              {currentQuestionIndex + 1 === questions.length
+                ? null
+                : `Current Question: ${questions[currentQuestionIndex + 1]?.questionText}`}
+            </p> */}
+
           
             {/* Merged Leaderboard and Fastest Players Card */}
             <Card className="leaderboardCard"> 

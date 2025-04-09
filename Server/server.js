@@ -37,17 +37,18 @@ const io = require("socket.io")(server, {
   let players = {};
   let scores = {};
   let answer = "";
-  let answerOrder = {}; // Tracks answer times for each quiz
+
   const answerSubmissions = {}; // Tracks answer submissions for each quiz
 
   
 io.on("connection", (socket) => {
-    //console.log("A user connected");
+   
 
     socket.on("join_quiz", ({ quizId, playerName, userId }) => {
         if (!quizId || !playerName) return;
 
         console.log(userId);
+        console.log(playerName);
 
         if (!players[quizId]) {
             players[quizId] = {};
@@ -82,6 +83,7 @@ io.on("connection", (socket) => {
         console.log(correctAnswer);
         console.log(time);
         answer = correctAnswer;
+        answerSubmissions[quizId] = {};
         io.emit("next_question", {newIndex, time});
     });
 

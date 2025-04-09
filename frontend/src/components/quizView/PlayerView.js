@@ -59,6 +59,7 @@ function PlayerView({ quiz, questions }) {
       setAnswer(questions[newIndex].correctAnswer);
       setTimeLeft(time);
       setIsMidQuestion(true);
+      setFeedbackMessage("Wrong! ❌");
     });
 
     socket.on("quiz_started", () => {
@@ -90,20 +91,20 @@ function PlayerView({ quiz, questions }) {
     };
   }, [socket, questions]);
 
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      socket.emit("leave_quiz", { quizId: quiz._id, playerName });
-      localStorage.removeItem("playerName");
-      event.preventDefault();
-      event.returnValue = '';
-    };
+  // useEffect(() => {
+  //   const handleBeforeUnload = (event) => {
+  //     socket.emit("leave_quiz", { quizId: quiz._id, playerName });
+  //     localStorage.removeItem("playerName");
+  //     event.preventDefault();
+  //     event.returnValue = '';
+  //   };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
 
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [quiz._id, playerName]);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, [quiz._id, playerName]);
 
   useEffect(() => {
     const handleRouteChange = () => {

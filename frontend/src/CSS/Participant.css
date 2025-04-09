@@ -8,65 +8,177 @@
 
 
 /* HostView.js */
-.startCard{
-    color: #ffffff;
-    background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent */
-    border-radius: 15px;
-    padding: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    min-width: 250px;
+/* HostView.js */
+
+/* HostView container */
+.hostView {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    
 }
-#EndButton, #NextButton, #StartButton, #leaderboardButton{
-    background-color: rgb(128, 128, 128);
-    border: none;
-    color: white;
-    text-align: center;
+
+/* Pre-quiz lobby */
+.host-preQuiz {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Quiz running view */
+.quiz-started-host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90vw;              /* Use 90% of the viewport width */
+    max-width: 1200px;        /* Allow it to grow big on large screens */
+    min-width: 300px;         /* Still safe on smaller screens */
+    margin: 0 auto;           /* Center horizontally */
+    gap: 0px;
+    padding: 20px;            /* Optional: breathing space */
+}
+
+/* Start card styling */
+.startCard {
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    min-width: 300px;
+    max-width: 400px;
     width: 100%;
-    height: 60px;
-    margin: 5px 0;
+    position: relative;
 }
 
-#EndButton:hover, #NextButton:hover, #StartButton:hover, #leaderboardButton:hover{
-    background-color: #f1f1f1;
-    color: black;
-}
-
-.leaderboardCard{
+/* Question card */
+.questionCard {
     color: #ffffff;
-    background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent */
+    background-color: rgba(0, 0, 0, 0.6);
     border-radius: 15px;
-    padding: 10px;
+    padding: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    min-width: 250px;
-    max-height: 300px;
-    min-height: 300px;
+    width: 100%;
+    max-width: 600px;
+    min-width: 300px;
+    max-height: 100%;
+    overflow-y: auto;
+    text-align: center;
+}
+
+/* Leaderboard and Fastest Players card */
+.leaderboardCard {
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    width: 100%;         /* fill available width */
+    max-width: 500px;    /* or however wide you want it */
+    min-height: 300px; 
+    height: 100%;
     overflow-y: auto;
 }
 
-.qr-code{
+/* Inline button group (End & Next) */
+.inline-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    gap: 10px;
+}
+
+/* QR Code */
+.qr-code {
     display: flex;
     justify-content: center;
-    margin: 5px 0;
+    margin: 10px 0;
 }
-.playerName{
+
+/* Player name text */
+.playerName {
     color: #ffffff;
     text-align: center;
 }
-#ExitButton{
-    background-color: rgba(128, 128, 128, 0);
-    border: none;
-    color: white;
-    float: left;
-}
+
+/* Exit button container */
 .exitButtonContainer {
     position: absolute;
     top: 10px;
     left: 10px;
 }
-#ExitButton:hover{
+
+/* Time adjustment controls */
+.time-adjustment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+/* Buttons */
+#StartButton,
+#NextButton,
+#EndButton,
+#leaderboardButton,
+#homeButton,
+#leaveButton {
+    background-color: rgb(128, 128, 128);
+    border: none;
+    color: white;
+    text-align: center;
+    margin: 5px 0;
+    transition: background-color 0.2s ease;
+}
+
+#StartButton,
+#homeButton,
+#leaveButton,
+#leaderboardButton {
+    width: 100%;
+    height: 60px;
+}
+
+#NextButton {
+    width: 60%;
+    height: 50px;
+}
+
+#EndButton {
+    width: 38%;
+    height: 50px;
+}
+
+#ExitButton {
+    background-color: rgba(128, 128, 128, 0);
+    border: none;
+    color: white;
+    padding: 0;
+}
+
+#ExitButton:hover,
+#EndButton:hover,
+#NextButton:hover,
+#StartButton:hover,
+#leaderboardButton:hover,
+#homeButton:hover,
+#leaveButton:hover {
     background-color: #f1f1f1;
     color: black;
 }
+
+/* Player list */
+.playerList {
+    margin-top: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
 
 
 /* PlayerView.js */
