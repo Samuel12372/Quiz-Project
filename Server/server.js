@@ -136,14 +136,14 @@ io.on("connection", (socket) => {
     });
 
     socket.on("submit_answer", ({ quizId, playerName, option }) => {
-        if (!quizId || !playerName) return;
-    
+        if (!quizId || !playerName || !option) return; // Ensure option is provided
+        
         console.log(`Answer received from ${playerName}: ${option}`);
-    
+        
+        // Initialize data structures if they don't exist
         if (!answerSubmissions[quizId]) {
             answerSubmissions[quizId] = {};
         }
-    
         if (!scores[quizId]) {
             scores[quizId] = {};
         }
@@ -153,47 +153,47 @@ io.on("connection", (socket) => {
     
         // Store the submission time and option
         answerSubmissions[quizId][playerName] = { option, time: Date.now() };
-    
-        // Check if all players have been accounted for
+        
+        // Check if all players have submitted (excluding players who didn't submit anything)
         const playersCount = Object.keys(players[quizId] || {}).length;
+        const submissionsCount = Object.keys(answerSubmissions[quizId]).length;
     
-        // Ensure all players are accounted for, even if they didn't submit an answer
-        Object.keys(players[quizId]).forEach((player) => {
-            if (!answerSubmissions[quizId][player]) {
-                answerSubmissions[quizId][player] = { option: null, time: Date.now() };
+        if (submissionsCount >= playersCount) {
+            // Process all answers at once
+            let answerOrder = [];
+            
+            Object.entries(answerSubmissions[quizId]).forEach(([player, { option, time }]) => {
+                // Ensure we only process players who actually selected an option
+                if (option !== undefined && option !== null) {
+                    const currentAnswer = correctAnswers[quizId];
+                    if (option === currentAnswer) {
+                        scores[quizId][player] += 10; // Base points for correct answer
+                        answerOrder.push({ playerName: player, time }); // Track speed for bonus
+                    }
+                }
+            });
+    
+            // Sort players by response time
+            answerOrder.sort((a, b) => a.time - b.time);
+    
+            // Award bonus points to the 3 fastest correct players
+            const bonusPoints = [5, 3, 1];
+            for (let i = 0; i < 3; i++) {
+                if (answerOrder[i]) {
+                    const fastestPlayer = answerOrder[i].playerName;
+                    scores[quizId][fastestPlayer] += bonusPoints[i];
+                }
             }
-        });
     
-        // Process all answers at once
-        let answerOrder = [];
-    
-        Object.entries(answerSubmissions[quizId]).forEach(([player, { option, time }]) => {
-            const currentAnswer = correctAnswers[quizId];
-            if (option === currentAnswer) {
-                scores[quizId][player] += 10; // Base points
-                answerOrder.push({ playerName: player, time }); // Track speed for bonus
-            }
-        });
-    
-        // Sort players by response time
-        answerOrder.sort((a, b) => a.time - b.time);
-    
-        // Award bonus points to the 3 fastest correct players
-        const bonusPoints = [5, 3, 1];
-        for (let i = 0; i < 3; i++) {
-            if (answerOrder[i]) {
-                const fastestPlayer = answerOrder[i].playerName;
-                scores[quizId][fastestPlayer] += bonusPoints[i];
-            }
+            // Emit final scores and fastest players
+            io.emit("update_scores", { quizId, scores: scores[quizId] });
+            io.emit("fastest_players", { quizId, fastestPlayers: answerOrder.slice(0, 3).map(entry => entry.playerName) });
+            
+            // Reset submissions for the next question
+            delete answerSubmissions[quizId];
         }
-    
-        // Emit final scores and fastest players
-        io.emit("update_scores", { quizId, scores: scores[quizId] });
-        io.emit("fastest_players", { quizId, fastestPlayers: answerOrder.slice(0, 3).map(entry => entry.playerName) });
-    
-        // Reset submissions for the next question
-        delete answerSubmissions[quizId];
     });
+    
 
    
 
