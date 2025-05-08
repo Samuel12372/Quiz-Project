@@ -45,8 +45,8 @@ const SettingsModal = ({ open, onClose }) => {
                 </TabPane>
                 <TabPane tab="Survey Link" key="3">
                     <Card>
-                        
-                        <h2><a href="https://docs.google.com/forms/d/e/1FAIpQLSfQswvW0NCwFeJdJb_z4gQvaQ9OZ0rMxHFRb_m9lkN5E5cKlw/viewform?usp=dialog">Google form link</a></h2>
+                         <h2><a href="https://docs.google.com/forms/d/e/1FAIpQLSd_buI7Xo3zP0NwcXTCpwTYu7zGPRZs_WYHW54zFFc68DJAZg/viewform?usp=dialog">Participant Consent Form</a></h2>
+                        <h2><a href="https://docs.google.com/forms/d/e/1FAIpQLSfQswvW0NCwFeJdJb_z4gQvaQ9OZ0rMxHFRb_m9lkN5E5cKlw/viewform?usp=dialog">Application Feedback</a></h2>
                         
                     </Card>
                 </TabPane>
