@@ -59,7 +59,7 @@ function PlayerView({ quiz, questions }) {
       setAnswer(questions[newIndex].correctAnswer);
       setTimeLeft(time);
       setIsMidQuestion(true);
-      setFeedbackMessage("Wrong! ❌");
+      setFeedbackMessage("");
     });
 
     socket.on("quiz_started", () => {
@@ -160,13 +160,17 @@ function PlayerView({ quiz, questions }) {
   useEffect(() => {
     if (isMidQuestion && timeLeft === 0) {
       // Timer has ended, submit the selected answer or null
-      const optionToSubmit = selectedOption || null;
+      const optionToSubmit = selectedOption || "No answer selected";
       console.log("Submitting answer after timer ends:", optionToSubmit);
       socket.emit("submit_answer", { quizId: quiz._id, playerName, option: optionToSubmit });
   
       // Provide feedback if no answer was selected
       if (!selectedOption) {
         setFeedbackMessage("No answer selected! ❌");
+      } else if (selectedOption === answer) {
+        setFeedbackMessage("Correct! ✅");
+      } else {
+        setFeedbackMessage("Wrong! ❌");
       }
   
       // Reset the selected option for the next question
